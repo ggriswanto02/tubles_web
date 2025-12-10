@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                     <!-- <div class="input-group">
-                        <form action="<?= base_url('table//cari') ?>" method="GET" id="searchForm">
+                        <form action="<?= base_url('/cari') ?>" method="GET" id="searchForm">
                             <span class="input-group-text text-body"><input type="search" id="searchInput" name="search" placeholder="Cari berdasarkan keterangan.." /><i class="fas fa-search" aria-hidden="true"></i></span>
                         </form>
                     </div> -->
@@ -76,13 +76,13 @@
                                                 <td class="px-2 text-center"><?= $row['persentase'] ?></td>
                                                 <td class="px-2 text-center"><?= $row['bobot_penilaian'] ?></td>
                                                 <td class="text-center">
-                                                    <a href="<?= base_url('table/korelasi-cpl-cpmk/' . $row['id'] . '/edit') ?>"
+                                                    <a href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/edit') ?>"
                                                         class="btn bg-gradient-info btn-block">
                                                         Edit
                                                     </a>
 
                                                     <a href="#"
-                                                        data-href="<?= base_url('table/korelasi-cpl-cpmk/' . $row['id'] . '/delete') ?>"
+                                                        data-href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/delete') ?>"
                                                         onclick="confirmToDelete(this)"
                                                         class="btn bg-gradient-danger btn-block"
                                                         data-bs-toggle="modal"
@@ -146,7 +146,7 @@
                                                 </div>
 
                                                 <div class="card-body pb-3">
-                                                    <form action="<?= base_url('table/korelasi-cpl-cpmk/new') ?>" method="post" role="form text-left">
+                                                    <form action="<?= base_url('korelasi-cpl-cpmk/new') ?>" method="post" role="form text-left">
 
                                                         <label>Penyusun</label>
                                                         <div class="input-group mb-3">

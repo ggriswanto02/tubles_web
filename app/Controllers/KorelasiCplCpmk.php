@@ -29,7 +29,7 @@ class KorelasiCplCpmk extends BaseController
 
         $model->insert($data);
 
-        return redirect()->to(base_url('table/korelasi-cpl-cpmk'))
+        return redirect()->to(base_url('korelasi-cpl-cpmk'))
             ->with('success', 'Data berhasil ditambahkan!');
     }
 
@@ -60,7 +60,7 @@ class KorelasiCplCpmk extends BaseController
 
         $model->update($id, $data);
 
-        return redirect()->to(base_url('table/korelasi-cpl-cpmk'))
+        return redirect()->to(base_url('korelasi-cpl-cpmk'))
             ->with('success', 'Data berhasil diperbarui!');
     }
 
@@ -69,7 +69,7 @@ class KorelasiCplCpmk extends BaseController
         $model = new KorelasiCplCpmkModel();
         $model->delete($id);
 
-        return redirect()->to(base_url('table/korelasi-cpl-cpmk'))
+        return redirect()->to(base_url('korelasi-cpl-cpmk'))
             ->with('success', 'Data berhasil dihapus!');
     }
 }
