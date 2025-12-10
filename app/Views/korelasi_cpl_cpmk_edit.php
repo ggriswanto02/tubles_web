@@ -11,7 +11,7 @@
 
             <div class="card-body px-3">
 
-                <form action="<?= base_url('table/korelasi-cpl-cpmk/update/' . $item['id']) ?>" method="post">
+                <form action="<?= base_url('korelasi-cpl-cpmk/update/' . $item['id']) ?>" method="post">
 
                     <!-- Penyusun -->
                     <label>Penyusun</label>
@@ -85,7 +85,7 @@
 
                     <!-- Buttons -->
                     <button type="submit" class="btn bg-gradient-primary">Update</button>
-                    <a href="<?= base_url('table/korelasi-cpl-cpmk') ?>" class="btn btn-secondary">Kembali</a>
+                    <a href="<?= base_url('korelasi-cpl-cpmk') ?>" class="btn btn-secondary">Kembali</a>
 
                 </form>
 

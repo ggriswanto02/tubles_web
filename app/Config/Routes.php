@@ -29,18 +29,16 @@ $routes->group('table', function ($routes) {
 	$routes->get('table3b71/cari', 'Table3b71::cari');
 });
 
-	$routes->group('korelasi-cpl-cpmk',function ($routes) {
-			$routes->get('/', 'KorelasiCplCpmk::index');
-			$routes->post('new', 'KorelasiCplCpmk::create');
-			$routes->get('(:num)/edit', 'KorelasiCplCpmk::edit/$1');
-			$routes->post('update/(:num)', 'KorelasiCplCpmk::update/$1');
-			$routes->get('(:num)/delete', 'KorelasiCplCpmk::delete/$1');
-		}
-	);
+$routes->group('korelasi-cpl-cpmk', function ($routes) {
+	$routes->get('/', 'KorelasiCplCpmk::index');
+	$routes->post('new', 'KorelasiCplCpmk::create');
+	$routes->get('(:num)/edit', 'KorelasiCplCpmk::edit/$1');
+	$routes->post('update/(:num)', 'KorelasiCplCpmk::update/$1');
+	$routes->get('(:num)/delete', 'KorelasiCplCpmk::delete/$1');
 });
 
 // grup rencana pembelajaran
-$routes->group('rpl', function($routes){
+$routes->group('rpl', function ($routes) {
 	$routes->get('/', 'rpl::index');
 	$routes->post('getData', 'rpl::getData');
 	$routes->post('newData', 'rpl::newData');
