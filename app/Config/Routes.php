@@ -18,7 +18,6 @@ $routes->post('/login/process', 'Login::process');
 $routes->get('/logout', 'Login::logout');
 
 
-
 // grup routes table
 $routes->group('table', function ($routes) {
 	// tabel 3b71
@@ -28,6 +27,7 @@ $routes->group('table', function ($routes) {
 	$routes->add('table3b71/(:segment)/edit', 'Table3b71::edit/$1');
 	$routes->get('table3b71/(:segment)/delete', 'Table3b71::delete/$1');
 	$routes->get('table3b71/cari', 'Table3b71::cari');
+});
 
 	$routes->group('korelasi-cpl-cpmk',function ($routes) {
 			$routes->get('/', 'KorelasiCplCpmk::index');
@@ -37,4 +37,14 @@ $routes->group('table', function ($routes) {
 			$routes->get('(:num)/delete', 'KorelasiCplCpmk::delete/$1');
 		}
 	);
+});
+
+// grup rencana pembelajaran
+$routes->group('rpl', function($routes){
+	$routes->get('/', 'rpl::index');
+	$routes->post('getData', 'rpl::getData');
+	$routes->post('newData', 'rpl::newData');
+	$routes->post('updateData', 'rpl::updateData');
+	$routes->get('getById', 'rpl::getById');
+	$routes->post('deleteById', 'rpl::deleteById');
 });
