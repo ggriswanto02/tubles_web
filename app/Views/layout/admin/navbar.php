@@ -31,7 +31,7 @@
           <li><a class="dropdown-item" href="<?= base_url('rpl') ?>">Capain Lulusan</a></li>
           <li><a class="dropdown-item" href="<?= base_url('rpl') ?>">Rencana Pembelajaran</a></li>
           <li><a class="dropdown-item" href="<?= base_url('rpl') ?>">Korelasi CPL–CPMK</a></li>
-          <li><a class="dropdown-item" href="<?= base_url('rpl') ?>">Nilai Pertemuan</a></li>
+          <li><a class="dropdown-item" href="<?= base_url('table/nilai-mhs-pertemuan') ?>">Nilai Pertemuan</a></li>
         </ul>
       </li>
     </ul>
