@@ -9,9 +9,7 @@ class Rpl extends BaseController
 {
     public function index()
     {
-        $rplTable = new RencanaPembelajaranModel();
-        $data['dataTable'] = $rplTable->findAll(10);
-        return view('rpembelajaran', $data);
+        return view('rpembelajaran');
     }
 
     public function getData()
