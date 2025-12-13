@@ -284,8 +284,6 @@
 
 
   <body class="bg-primary">
-    <div class="min-height-300 bg-gray-100 w-100"></div>
-
     <?php
     $success = session()->getFlashdata('success');
     $error = session()->getFlashdata('error');
