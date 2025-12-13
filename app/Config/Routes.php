@@ -5,8 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('/dashboard', 'Dashboard::index');
+ $routes->get('/', 'Home::index');
+ $routes->get('/dashboard', 'Dashboard::index');
 /** routes dashboard */
 
 
@@ -52,4 +52,15 @@ $routes->group('rpl', function ($routes) {
 	$routes->post('updateData', 'rpl::updateData');
 	$routes->get('getById', 'rpl::getById');
 	$routes->post('deleteById', 'rpl::deleteById');
+});
+
+$routes->group('table', function($routes){
+    $routes->get('cpl', 'CPL::index');
+    $routes->get('cpl/create', 'CPL::create');
+    $routes->post('cpl/store', 'CPL::store');
+
+	$routes->get('cpl/delete/(:num)', 'CPL::delete/$1');
+
+	$routes->post('cpl/update', 'CPL::update');
+
 });
