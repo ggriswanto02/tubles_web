@@ -16,12 +16,12 @@
 
                     <label>Nim</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="id_nim" value="<?= $item['id_nim'] ?>" required>
+                        <input type="text" class="form-control" name="nim" value="<?= $item['nim'] ?>" required>
                     </div>
 
                     <label>Rencana Pembelajaran</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="id_rencana Pembelajaran" value="<?= $item['id_rencana Pembelajaran'] ?>" required>
+                        <input type="text" class="form-control" name="id_rencana_pembelajaran" value="<?= $item['id_rencana_pembelajaran'] ?>" required>
                     </div>
 
                     <label>Nilai Kompetensi</label>
@@ -36,7 +36,7 @@
 
                     <label>Keterangan</label>
                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" name="keterangan" value="<?= $item['keterangan'] ?>" required>
+                        <textarea rows="3" class="form-control" name="keterangan" value="<?= $item['keterangan'] ?>" required ></textarea>
                     </div>
 
                     
