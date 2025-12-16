@@ -5,8 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('/dashboard', 'Dashboard::index');
+ $routes->get('/', 'Home::index');
+ $routes->get('/dashboard', 'Dashboard::index');
 /** routes dashboard */
 
 
@@ -27,7 +27,14 @@ $routes->group('table', function ($routes) {
 	$routes->add('table3b71/(:segment)/edit', 'Table3b71::edit/$1');
 	$routes->get('table3b71/(:segment)/delete', 'Table3b71::delete/$1');
 	$routes->get('table3b71/cari', 'Table3b71::cari');
+
+  $routes->get('nilai-mhs-pertemuan', 'NilaiMhsPertemuan::index');
+	$routes->post('nilai-mhs-pertemuan/new', 'NilaiMhsPertemuan::create');
+	$routes->get('nilai-mhs-pertemuan/(:num)/edit', 'NilaiMhsPertemuan::edit/$1');
+	$routes->post('nilai-mhs-pertemuan/update/(:num)', 'NilaiMhsPertemuan::update/$1');
+	$routes->get('nilai-mhs-pertemuan/(:num)/delete', 'NilaiMhsPertemuan::delete/$1');
 });
+
 
 $routes->group('korelasi-cpl-cpmk', function ($routes) {
 	$routes->get('/', 'KorelasiCplCpmk::index');
@@ -45,4 +52,15 @@ $routes->group('rpl', function ($routes) {
 	$routes->post('updateData', 'rpl::updateData');
 	$routes->get('getById', 'rpl::getById');
 	$routes->post('deleteById', 'rpl::deleteById');
+});
+
+$routes->group('table', function($routes){
+    $routes->get('cpl', 'CPL::index');
+    $routes->get('cpl/create', 'CPL::create');
+    $routes->post('cpl/store', 'CPL::store');
+
+	$routes->get('cpl/delete/(:num)', 'CPL::delete/$1');
+
+	$routes->post('cpl/update', 'CPL::update');
+
 });
