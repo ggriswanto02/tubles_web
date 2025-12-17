@@ -22,6 +22,7 @@ class CreateCplTable extends Migration
             ],
             'cpl_prodi' => [
                 'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
         ]);
 
