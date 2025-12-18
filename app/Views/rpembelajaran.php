@@ -24,11 +24,6 @@
           <div class="card-header pb-0">
             <h5>Rencana Pembelajaran</h5>
             <h6>Daftar Mingguan</h6>
-
-            <!-- button tambah -->
-            <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
-              data-bs-target="#modalCreate">Tambah Data</button>
-            <br>
           </div>
 
           <div class="card-body pb-2">
@@ -371,6 +366,28 @@
           processing: true,
           serverSide: true,
           scrollX: true,
+          dom: 'Bfrtip',
+          buttons: [
+            {
+              text: 'Tambah Data',
+              className: 'btn bg-gradient-success mb-3',
+              action: function () {
+                const modal = new bootstrap.Modal(
+                  document.getElementById('modalCreate')
+                );
+                modal.show();
+              }
+            },
+            {
+              extend: 'excelHtml5',
+              className: 'btn bg-gradient-secondary btn-block mb-3',
+              text: 'Export Excel',
+              title: 'Rencana_Pembelajaran',
+              exportOptions: {
+                columns: ':not(:last-child)'
+              }
+            }
+          ],
           ajax: {
             url: "<?= base_url('rpl/getData') ?>",
             type: "POST"
@@ -411,6 +428,9 @@
               }
             }
           ]
+        });
+        document.querySelectorAll('.dt-button').forEach(btn => {
+          btn.classList.remove('dt-button');
         });
 
         // Hapus Data
