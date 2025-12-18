@@ -53,7 +53,9 @@
                 </p>
             </div>
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCPL">Tambah Data</button>
+              <a href="<?= site_url('table/cpl/export') ?>" class="btn btn-success mb-3">Export Excel</a>
             </div>
+            
           <div class="card-body p-3">
             <div class="table-responsive">
               <table class="table table-striped align-items-center mb-0">
