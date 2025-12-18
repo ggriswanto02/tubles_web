@@ -150,12 +150,25 @@
 
                                                         <label>Penyusun</label>
                                                         <div class="input-group mb-3">
+                                                            <!-- <select name="id_penyusun" id="id_penyusun" class="form-control" required>
+                                                                <option value="">-- Pilih Penyusun --</option>
+                                                                <option value="DSN01">Mamank Irfa</option>
+                                                                <option value="DSN02">Mamank Agung</option>
+                                                                <option value="DSN03">Mamank Adit</option>
+                                                                <option value="DSN04">Mamank Deska</option>
+                                                            </select> -->
                                                             <input type="text" class="form-control" name="id_penyusun" placeholder="Masukkan Penyusun" required>
                                                         </div>
 
                                                         <label>Matakuliah</label>
                                                         <div class="input-group mb-3">
                                                             <input type="text" class="form-control" name="id_matakuliah" placeholder="Masukkan Matakuliah" required>
+                                                            <!-- <select name="id_matakuliah" id="id_matakuliah" class="form-control" required>
+                                                                <option value="">-- Pilih Matakuliah --</option>
+                                                                <option value="MK001">Pemrograman Web</option>
+                                                                <option value="MK002">Basis Data</option>
+                                                                <option value="MK003">Algoritma dan Struktur Data</option>
+                                                            </select> -->
                                                         </div>
 
                                                         <!-- ================= CPMK ================= -->
@@ -226,8 +239,6 @@
 
 
 <body class="g-sidenav-show bg-primary">
-    <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
-
     <!-- js search -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {

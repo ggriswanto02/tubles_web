@@ -111,7 +111,6 @@
 
 
   <body class="g-sidenav-show bg-primary">
-  <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
   
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
