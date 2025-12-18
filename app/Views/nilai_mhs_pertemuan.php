@@ -30,8 +30,8 @@
             <div class="col-12">
                 <div class="card mb-0">
                     <div class="card-header pb-0">
-                        <h5>nilai mahasiswa pertemuan</h5>
-                        <h6>Daftar Pencapaian</h6>
+                        <h5>Nilai Pertemuan</h5>
+                        <h6>Daftar Penilaian</h6>
                         <!-- button tambah -->
                         <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
                             Tambah Data
