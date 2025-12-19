@@ -4,11 +4,13 @@
 
 <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
+        data-scroll="false">
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a>
+                    </li>
                     <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
                 </ol>
                 <h3 class="font-weight-bolder text-white mb-0">Tables</h3>
@@ -32,11 +34,17 @@
                     <div class="card-header pb-0">
                         <h5>Korelasi Capaian Pembelajaran</h5>
                         <h6>Daftar Pencapaian</h6>
-                        <!-- button tambah -->
-                        <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
-                            Tambah Data
-                        </button>
-                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>"class="btn btn-success mb-3">Export Excel</a>
+
+                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                            <!-- button tambah -->
+                            <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
+                                data-bs-target="#modalCreate">
+                                Tambah Data
+                            </button>
+                        <?php endif ?>
+
+                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>" class="btn btn-success mb-3">Export
+                            Excel</a>
                         <br>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -44,14 +52,22 @@
                             <table class="table table-hover align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder px-2">No</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder px-2">
+                                            No</th>
                                         <th class="text-uppercase text-xs font-weight-bolder px-2">Penyusun</th>
                                         <th class="text-uppercase text-xs font-weight-bolder px-2">Matakuliah</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Capaian Pembelajaran</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Sub Capaian Pembelajaran</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Persentase (%)</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Bobot Penilaian</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Aksi</th>
+                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Capaian Pembelajaran
+                                        </th>
+                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Sub Capaian
+                                            Pembelajaran</th>
+                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">
+                                            Persentase (%)</th>
+                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Bobot
+                                            Penilaian</th>
+                                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                                            <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Aksi</th>
+                                        <?php endif ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,30 +85,32 @@
                                                 <td class="px-2 text-sm"><?= $row['id_penyusun'] ?></td>
                                                 <td class="px-2 text-sm"><?= $row['id_matakuliah'] ?></td>
                                                 <td class="px-2 w-25">
-                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;" disabled><?= $row['cpmk'] ?></textarea>
+                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;"
+                                                        disabled><?= $row['cpmk'] ?></textarea>
                                                 </td>
                                                 <td class="px-2 w-25">
-                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;" disabled><?= $row['sub_cpmk'] ?></textarea>
+                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;"
+                                                        disabled><?= $row['sub_cpmk'] ?></textarea>
                                                 </td>
                                                 <td class="px-2 text-center"><?= $row['persentase'] ?></td>
                                                 <td class="px-2 text-center"><?= $row['bobot_penilaian'] ?></td>
-                                                <td class="text-center">
-                                                    <a href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/edit') ?>"
-                                                        class="btn bg-gradient-info btn-block">
-                                                        Edit
-                                                    </a>
+                                                <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                                                    <td class="text-center">
+                                                        <a href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/edit') ?>"
+                                                            class="btn bg-gradient-info btn-block">
+                                                            Edit
+                                                        </a>
 
-                                                    <a href="#"
-                                                        data-href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/delete') ?>"
-                                                        onclick="confirmToDelete(this)"
-                                                        class="btn bg-gradient-danger btn-block"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#confirm-dialog">
-                                                        Hapus
-                                                    </a>
-                                                </td>
+                                                        <a href="#"
+                                                            data-href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/delete') ?>"
+                                                            onclick="confirmToDelete(this)" class="btn bg-gradient-danger btn-block"
+                                                            data-bs-toggle="modal" data-bs-target="#confirm-dialog">
+                                                            Hapus
+                                                        </a>
+                                                    </td>
+                                                <?php endif ?>
                                             </tr>
-                                        <?php $no++;
+                                            <?php $no++;
                                         endforeach; ?>
                                     <?php endif; ?>
                                 </tbody>
@@ -101,133 +119,140 @@
                             <!-- js message data tidak ditemukan  -->
                             <div id="resultMessage" class="result-message text-center"></div>
 
-                            <!-- modal delete -->
-                            <div class="modal fade" id="confirm-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah Anda yakin ingin menghapus data ini?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                            <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                                <!-- modal delete -->
+                                <div class="modal fade" id="confirm-dialog" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah Anda yakin ingin menghapus data ini?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="deleteData()">Hapus</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- js delete -->
-                            <script>
-                                function confirmToDelete(element) {
-                                    var deleteButton = document.getElementById('confirm-dialog').querySelector('.btn-danger');
-                                    deleteButton.setAttribute('data-href', element.getAttribute('data-href'));
-                                }
+                                <!-- js delete -->
+                                <script>
+                                    function confirmToDelete(element) {
+                                        var deleteButton = document.getElementById('confirm-dialog').querySelector('.btn-danger');
+                                        deleteButton.setAttribute('data-href', element.getAttribute('data-href'));
+                                    }
 
-                                function deleteData() {
-                                    var deleteUrl = document.getElementById('confirm-dialog').querySelector('.btn-danger').getAttribute('data-href');
+                                    function deleteData() {
+                                        var deleteUrl = document.getElementById('confirm-dialog').querySelector('.btn-danger').getAttribute('data-href');
 
-                                    window.location.href = deleteUrl;
-                                }
-                            </script>
+                                        window.location.href = deleteUrl;
+                                    }
+                                </script>
 
-                            <!-- modal tambah data -->
-                            <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card card-plain">
+                                <!-- modal tambah data -->
+                                <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-0">
+                                                <div class="card card-plain">
 
-                                                <div class="card-header pb-0 text-left">
-                                                    <h3 class="font-weight-bolder text-primary text-gradient">Tambah Korelasi CPL–CPMK</h3>
-                                                    <p class="mb-0">Masukkan data CPL–CPMK</p>
-                                                </div>
+                                                    <div class="card-header pb-0 text-left">
+                                                        <h3 class="font-weight-bolder text-primary text-gradient">Tambah
+                                                            Korelasi CPL–CPMK</h3>
+                                                        <p class="mb-0">Masukkan data CPL–CPMK</p>
+                                                    </div>
 
-                                                <div class="card-body pb-3">
-                                                    <form action="<?= base_url('korelasi-cpl-cpmk/new') ?>" method="post" role="form text-left">
+                                                    <div class="card-body pb-3">
+                                                        <form action="<?= base_url('korelasi-cpl-cpmk/new') ?>"
+                                                            method="post" role="form text-left">
 
-                                                        <label>Penyusun</label>
-                                                        <div class="input-group mb-3">
-                                                            <!-- <select name="id_penyusun" id="id_penyusun" class="form-control" required>
+                                                            <label>Penyusun</label>
+                                                            <div class="input-group mb-3">
+                                                                <!-- <select name="id_penyusun" id="id_penyusun" class="form-control" required>
                                                                 <option value="">-- Pilih Penyusun --</option>
                                                                 <option value="DSN01">Mamank Irfa</option>
                                                                 <option value="DSN02">Mamank Agung</option>
                                                                 <option value="DSN03">Mamank Adit</option>
                                                                 <option value="DSN04">Mamank Deska</option>
                                                             </select> -->
-                                                            <input type="text" class="form-control" name="id_penyusun" placeholder="Masukkan Penyusun" required>
-                                                        </div>
+                                                                <input type="text" class="form-control" name="id_penyusun"
+                                                                    placeholder="Masukkan Penyusun" required>
+                                                            </div>
 
-                                                        <label>Matakuliah</label>
-                                                        <div class="input-group mb-3">
-                                                            <input type="text" class="form-control" name="id_matakuliah" placeholder="Masukkan Matakuliah" required>
-                                                            <!-- <select name="id_matakuliah" id="id_matakuliah" class="form-control" required>
+                                                            <label>Matakuliah</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control" name="id_matakuliah"
+                                                                    placeholder="Masukkan Matakuliah" required>
+                                                                <!-- <select name="id_matakuliah" id="id_matakuliah" class="form-control" required>
                                                                 <option value="">-- Pilih Matakuliah --</option>
                                                                 <option value="MK001">Pemrograman Web</option>
                                                                 <option value="MK002">Basis Data</option>
                                                                 <option value="MK003">Algoritma dan Struktur Data</option>
                                                             </select> -->
-                                                        </div>
+                                                            </div>
 
-                                                        <!-- ================= CPMK ================= -->
-                                                        <label>CPMK</label>
-                                                        <div class="mb-3">
-                                                            <textarea
-                                                                class="form-control bg-white text-dark"
-                                                                name="cpmk"
-                                                                rows="3"
-                                                                maxlength="255"
-                                                                oninput="updateCount('cpmk', 'cpmkCount')"
-                                                                placeholder="Masukkan CPMK"
-                                                                required></textarea>
-                                                            <small class="text-muted text-xs float-end">
-                                                                <span id="cpmkCount">0</span>/255
-                                                            </small>
-                                                        </div>
+                                                            <!-- ================= CPMK ================= -->
+                                                            <label>CPMK</label>
+                                                            <div class="mb-3">
+                                                                <textarea class="form-control bg-white text-dark"
+                                                                    name="cpmk" rows="3" maxlength="255"
+                                                                    oninput="updateCount('cpmk', 'cpmkCount')"
+                                                                    placeholder="Masukkan CPMK" required></textarea>
+                                                                <small class="text-muted text-xs float-end">
+                                                                    <span id="cpmkCount">0</span>/255
+                                                                </small>
+                                                            </div>
 
-                                                        <!-- ================= Sub CPMK ================= -->
-                                                        <label>Sub CPMK</label>
-                                                        <div class="mb-3">
-                                                            <textarea
-                                                                class="form-control bg-white text-dark"
-                                                                name="sub_cpmk"
-                                                                rows="3"
-                                                                maxlength="255"
-                                                                oninput="updateCount('sub_cpmk', 'subCount')"
-                                                                placeholder="Masukkan Sub CPMK"
-                                                                required></textarea>
-                                                            <small class="text-muted text-xs float-end">
-                                                                <span id="subCount">0</span>/255
-                                                            </small>
-                                                        </div>
+                                                            <!-- ================= Sub CPMK ================= -->
+                                                            <label>Sub CPMK</label>
+                                                            <div class="mb-3">
+                                                                <textarea class="form-control bg-white text-dark"
+                                                                    name="sub_cpmk" rows="3" maxlength="255"
+                                                                    oninput="updateCount('sub_cpmk', 'subCount')"
+                                                                    placeholder="Masukkan Sub CPMK" required></textarea>
+                                                                <small class="text-muted text-xs float-end">
+                                                                    <span id="subCount">0</span>/255
+                                                                </small>
+                                                            </div>
 
-                                                        <label>Persentase (%)</label>
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="persentase" placeholder="Persentase (0–100)" min="0" max="100" required>
-                                                        </div>
+                                                            <label>Persentase (%)</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="number" class="form-control" name="persentase"
+                                                                    placeholder="Persentase (0–100)" min="0" max="100"
+                                                                    required>
+                                                            </div>
 
-                                                        <label>Bobot Penilaian</label>
-                                                        <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" name="bobot_penilaian" placeholder="Bobot Penilaian" min="0" max="100" required>
-                                                        </div>
+                                                            <label>Bobot Penilaian</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="number" class="form-control"
+                                                                    name="bobot_penilaian" placeholder="Bobot Penilaian"
+                                                                    min="0" max="100" required>
+                                                            </div>
 
-                                                        <div class="text-center">
-                                                            <button type="submit" class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">
-                                                                Tambah
-                                                            </button>
-                                                        </div>
+                                                            <div class="text-center">
+                                                                <button type="submit"
+                                                                    class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">
+                                                                    Tambah
+                                                                </button>
+                                                            </div>
 
-                                                    </form>
+                                                        </form>
+                                                    </div>
+
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -242,7 +267,7 @@
 <body class="g-sidenav-show bg-primary">
     <!-- js search -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const searchForm = document.getElementById("searchForm");
             const searchInput = document.getElementById("searchInput");
             const resultMessage = document.getElementById("resultMessage");
@@ -252,7 +277,7 @@
                 const searchText = searchInput.value.toLowerCase();
                 let foundRows = 0;
 
-                tableBody.querySelectorAll("tr").forEach(function(row, index) {
+                tableBody.querySelectorAll("tr").forEach(function (row, index) {
                     const cells = row.querySelectorAll("td");
                     const kategoriText = cells[3].textContent.toLowerCase();
 
@@ -271,7 +296,7 @@
                 }
             }
 
-            searchForm.addEventListener("submit", function(event) {
+            searchForm.addEventListener("submit", function (event) {
                 event.preventDefault();
                 filterRows();
             });
@@ -281,7 +306,7 @@
             filterRows();
         });
 
-        document.getElementById('modalCreate').addEventListener('shown.bs.modal', function() {
+        document.getElementById('modalCreate').addEventListener('shown.bs.modal', function () {
             const form = this.querySelector('form');
             if (form) {
                 form.reset();
