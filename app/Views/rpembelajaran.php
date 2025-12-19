@@ -372,28 +372,6 @@
           processing: true,
           serverSide: true,
           scrollX: true,
-          dom: 'Bfrtip',
-          buttons: [
-            {
-              text: 'Tambah Data',
-              className: 'btn bg-gradient-success mb-3',
-              action: function () {
-                const modal = new bootstrap.Modal(
-                  document.getElementById('modalCreate')
-                );
-                modal.show();
-              }
-            },
-            {
-              extend: 'excelHtml5',
-              className: 'btn bg-gradient-secondary btn-block mb-3',
-              text: 'Export Excel',
-              title: 'Rencana_Pembelajaran',
-              exportOptions: {
-                columns: ':not(:last-child)'
-              }
-            }
-          ],
           ajax: {
             url: "<?= base_url('rpl/getData') ?>",
             type: "POST"
