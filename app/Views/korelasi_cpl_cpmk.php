@@ -36,6 +36,7 @@
                         <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
                             Tambah Data
                         </button>
+                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>"class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -150,12 +151,25 @@
 
                                                         <label>Penyusun</label>
                                                         <div class="input-group mb-3">
+                                                            <!-- <select name="id_penyusun" id="id_penyusun" class="form-control" required>
+                                                                <option value="">-- Pilih Penyusun --</option>
+                                                                <option value="DSN01">Mamank Irfa</option>
+                                                                <option value="DSN02">Mamank Agung</option>
+                                                                <option value="DSN03">Mamank Adit</option>
+                                                                <option value="DSN04">Mamank Deska</option>
+                                                            </select> -->
                                                             <input type="text" class="form-control" name="id_penyusun" placeholder="Masukkan Penyusun" required>
                                                         </div>
 
                                                         <label>Matakuliah</label>
                                                         <div class="input-group mb-3">
                                                             <input type="text" class="form-control" name="id_matakuliah" placeholder="Masukkan Matakuliah" required>
+                                                            <!-- <select name="id_matakuliah" id="id_matakuliah" class="form-control" required>
+                                                                <option value="">-- Pilih Matakuliah --</option>
+                                                                <option value="MK001">Pemrograman Web</option>
+                                                                <option value="MK002">Basis Data</option>
+                                                                <option value="MK003">Algoritma dan Struktur Data</option>
+                                                            </select> -->
                                                         </div>
 
                                                         <!-- ================= CPMK ================= -->
@@ -226,8 +240,6 @@
 
 
 <body class="g-sidenav-show bg-primary">
-    <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
-
     <!-- js search -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {

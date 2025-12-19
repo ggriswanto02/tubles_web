@@ -28,6 +28,7 @@
             <!-- button tambah -->
             <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
               data-bs-target="#modalCreate">Tambah Data</button>
+            <a href="<?= site_url('rpl/export') ?>" class="btn btn-success mb-3">Export Excel</a>
             <br>
           </div>
 
@@ -284,8 +285,6 @@
 
 
   <body class="bg-primary">
-    <div class="min-height-300 bg-gray-100 w-100"></div>
-
     <?php
     $success = session()->getFlashdata('success');
     $error = session()->getFlashdata('error');
@@ -411,6 +410,9 @@
               }
             }
           ]
+        });
+        document.querySelectorAll('.dt-button').forEach(btn => {
+          btn.classList.remove('dt-button');
         });
 
         // Hapus Data
