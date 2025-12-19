@@ -30,12 +30,13 @@
             <div class="col-12">
                 <div class="card mb-0">
                     <div class="card-header pb-0">
-                        <h5>nilai mahasiswa pertemuan</h5>
-                        <h6>Daftar Pencapaian</h6>
+                        <h5>Nilai Pertemuan</h5>
+                        <h6>Daftar Penilaian</h6>
                         <!-- button tambah -->
                         <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
                             Tambah Data
                         </button>
+                        <a href="<?= site_url('table/nilai-mhs-pertemuan/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -207,7 +208,6 @@
 
 
 <body class="g-sidenav-show bg-primary">
-    <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
 
     <!-- js search -->
     <script>

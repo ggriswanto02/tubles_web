@@ -75,7 +75,6 @@
     </main>
 
 <body class="g-sidenav-show bg-primary">
-  <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
  
 
   

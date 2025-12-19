@@ -52,8 +52,12 @@
                    <span class="font-weight-bold">Tabel CPL</span> — Data Capaian Pembelajaran Lulusan.
                 </p>
             </div>
+            <div class="row-2">
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCPL">Tambah Data</button>
+              <a href="<?= site_url('table/cpl/export') ?>" class="btn btn-success mb-3">Export Excel</a>
             </div>
+            </div>
+            
           <div class="card-body p-3">
             <div class="table-responsive">
               <table class="table table-striped align-items-center mb-0">
@@ -111,7 +115,6 @@
 
 
   <body class="g-sidenav-show bg-primary">
-  <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
   
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
