@@ -21,6 +21,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function create()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('table/nilai-mhs-pertemuan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
 
         $data = [
@@ -40,6 +43,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function edit($id)
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('table/nilai-mhs-pertemuan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
         $data['item'] = $model->find($id);
 
@@ -52,6 +58,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function update($id)
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('table/nilai-mhs-pertemuan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
 
         $data = [
@@ -72,6 +81,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function delete($id)
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('table/nilai-mhs-pertemuan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
         $model->delete($id);
 
