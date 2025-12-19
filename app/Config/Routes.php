@@ -33,6 +33,8 @@ $routes->group('table', function ($routes) {
 	$routes->get('nilai-mhs-pertemuan/(:num)/edit', 'NilaiMhsPertemuan::edit/$1');
 	$routes->post('nilai-mhs-pertemuan/update/(:num)', 'NilaiMhsPertemuan::update/$1');
 	$routes->get('nilai-mhs-pertemuan/(:num)/delete', 'NilaiMhsPertemuan::delete/$1');
+	$routes->get('nilai-mhs-pertemuan/export', 'NilaiMhsPertemuan::exportExcel');
+
 });
 
 
@@ -42,6 +44,7 @@ $routes->group('korelasi-cpl-cpmk', function ($routes) {
 	$routes->get('(:num)/edit', 'KorelasiCplCpmk::edit/$1');
 	$routes->post('update/(:num)', 'KorelasiCplCpmk::update/$1');
 	$routes->get('(:num)/delete', 'KorelasiCplCpmk::delete/$1');
+    $routes->get('export', 'KorelasiCplCpmk::exportExcel');
 });
 
 // grup rencana pembelajaran
@@ -52,6 +55,7 @@ $routes->group('rpl', function ($routes) {
 	$routes->post('updateData', 'rpl::updateData');
 	$routes->get('getById', 'rpl::getById');
 	$routes->post('deleteById', 'rpl::deleteById');
+	$routes->get('export', 'rpl::exportExcel');
 });
 
 $routes->group('table', function($routes){
@@ -62,5 +66,7 @@ $routes->group('table', function($routes){
 	$routes->get('cpl/delete/(:num)', 'CPL::delete/$1');
 
 	$routes->post('cpl/update', 'CPL::update');
+	$routes->get('cpl/export', 'CPL::exportExcel');
+
 
 });
