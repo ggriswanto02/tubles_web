@@ -8,8 +8,8 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Tables</a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Rencana Pembelajaran</li>
                 </ol>
                 <!-- <h3 class="font-weight-bolder text-white mb-0">Tables</h3> -->
             </nav>
@@ -21,28 +21,31 @@
             <div class="col-12">
                 <div class="card mb-0">
                     <div class="card-header pb-0">
-                        <h5>Korelasi Capaian Pembelajaran</h5>
-                        <h6>Daftar Pencapaian</h6>
+                        <h5>Rencana Pembelajaran</h5>
+                        <h6>Daftar Mingguan</h6>
                         <!-- button tambah -->
-                        <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
-                            Tambah Data
-                        </button>
-                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>" class="btn btn-success mb-3">Export Excel</a>
+                        <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
+                            data-bs-target="#modalCreate">Tambah Data</button>
+                        <a href="<?= site_url('rencana-pembelajaran/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
 
                     <div class="card-body pb-2">
                         <div class="table-responsive">
-                            <table id="tableCPLCPMK" class="table table-striped nowrap" style="width:100%">
+                            <table id="tableRPL" class="table table-striped nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Penyusun</th>
-                                        <th>Matakuliah</th>
-                                        <th>Capaian Pembelajaran</th>
-                                        <th>Sub Capaian Pembelajaran</th>
-                                        <th>Persentase (%)</th>
-                                        <th>Bobot Penilaian</th>
+                                        <th>Mata Kuliah</th>
+                                        <th>Minggu Ke</th>
+                                        <th>Sub CPMK</th>
+                                        <th>Indikator</th>
+                                        <th>Teknik</th>
+                                        <th>Pembelajaran</th>
+                                        <th>Materi</th>
+                                        <th>Bobot</th>
+                                        <th>Catatan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -79,12 +82,12 @@
 
                                             <div class="card-header pb-0 text-left">
                                                 <h3 class="font-weight-bolder text-primary text-gradient">
-                                                    Tambah Korelasi CPL-CPMK
+                                                    Tambah Rencana Pembelajaran
                                                 </h3>
                                             </div>
 
                                             <div class="card-body pb-3">
-                                                <form action="<?= base_url('korelasi-cpl-cpmk/newData') ?>" method="post">
+                                                <form action="<?= base_url('rencana-pembelajaran/newData') ?>" method="post">
 
                                                     <!-- Hardcode Penyusun -->
                                                     <div class="mb-2">
@@ -109,27 +112,44 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label>CPMK</label>
-                                                        <textarea name="cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
-                                                        <small class="text-muted text-xs float-end">
-                                                            <span id="cpmkCount">0</span>/255
-                                                        </small>
+                                                        <label>Minggu Ke</label>
+                                                        <input type="number" name="minggu_ke" class="form-control" placeholder="Masukkan Minggu Ke" required>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label>Sub CPMK</label>
-                                                        <textarea name="sub_cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('sub_cpmk', 'subCount')" placeholder="Masukkan Sub CPMK"></textarea>
-                                                        <small class="text-muted text-xs float-end">
-                                                            <span id="subCount">0</span>/255
-                                                        </small>
+                                                        <input type="text" name="sub_cpmk" class="form-control" placeholder="Masukkan Sub CPMK" required>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label>Persentase (%)</label>
-                                                        <input type="number" name="persentase" class="form-control" placeholder="Masukkan Persentase (0–100)" min="0" max="100" required>
+                                                        <label>Indikator Penilaian</label>
+                                                        <input type="text" name="penilaian_indikator" class="form-control" placeholder="Masukkan Indikator">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label>Teknik Penilaian</label>
+                                                        <input type="text" name="penilaian_teknik" class="form-control" placeholder="Masukkan Teknik">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label>Bentuk Pembelajaran</label>
+                                                        <input type="text" name="bentuk_pembelajaran" class="form-control" placeholder="Masukkan Pembelajaran">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label>Bobot Penilaian</label>
-                                                        <input type="number" name="bobot_penilaian" class="form-control" placeholder="Masukkan Bobot (0–100)" min="0" max="100" required>
+                                                        <input type="number" name="bobot_penilaian" class="form-control" placeholder="Masukkan Bobot">
                                                     </div>
+                                                    <div class="mb-2">
+                                                        <label>Materi</label>
+                                                        <textarea name="materi" class="form-control" rows="3" maxlength="255" oninput="updateCount('materi', 'materiCount')" placeholder="Masukkan Materi"></textarea>
+                                                        <small class="text-muted text-xs float-end">
+                                                            <span id="materiCount">0</span>/255
+                                                        </small>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label>Catatan</label>
+                                                        <textarea name="catatan" class="form-control" rows="3" maxlength="255" oninput="updateCount('catatan', 'catatanCount')" placeholder="Masukkan Catatan"></textarea>
+                                                        <small class="text-muted text-xs float-end">
+                                                            <span id="catatanCount">0</span>/255
+                                                        </small>
+                                                    </div>
+
                                                     <div class="text-center">
                                                         <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
                                                             Tambah
@@ -150,11 +170,11 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
 
-                                    <form id="formEdit" action="<?= base_url('korelasi-cpl-cpmk/updateData') ?>" method="post">
+                                    <form id="formEdit" action="<?= base_url('rencana-pembelajaran/updateData') ?>" method="post">
 
                                         <div class="card-header pb-0 text-left">
                                             <h3 class="font-weight-bolder text-primary text-gradient">
-                                                Edit Korelasi CPL-CPMK
+                                                Edit Rencana Pembelajaran
                                             </h3>
                                         </div>
 
@@ -183,27 +203,46 @@
                                                 </select>
                                             </div>
                                             <div class="mb-2">
-                                                <label>CPMK</label>
-                                                <textarea class="form-control" id="edit_cpmk" name="cpmk" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
-                                                <small class="text-muted text-xs float-end">
-                                                    <span id="cpmkCount">0</span>/255
-                                                </small>
+                                                <label>Minggu Ke</label>
+                                                <input type="number" class="form-control" id="edit_minggu_ke" name="minggu_ke">
                                             </div>
                                             <div class="mb-2">
                                                 <label>Sub CPMK</label>
-                                                <textarea class="form-control" id="edit_sub_cpmk" name="sub_cpmk" rows="3" maxlength="255" oninput="updateCount('subcpmk', 'subcpmkCount')" placeholder="Masukkan Sub CPMK"></textarea>
-                                                <small class="text-muted text-xs float-end">
-                                                    <span id="subcpmkCount">0</span>/255
-                                                </small>
+                                                <input type="text" class="form-control" id="edit_sub_cpmk" name="sub_cpmk">
                                             </div>
                                             <div class="mb-2">
-                                                <label>Persentase (%)</label>
-                                                <input type="number" class="form-control" id="edit_persentase" name="persentase" min="0" max="100">
+                                                <label>Indikator Penilaian</label>
+                                                <input type="text" class="form-control" id="edit_penilaian_indikator"
+                                                    name="penilaian_indikator">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label>Teknik Penilaian</label>
+                                                <input type="text" class="form-control" id="edit_penilaian_teknik" name="penilaian_teknik">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label>Bentuk Pembelajaran</label>
+                                                <input type="text" class="form-control" id="edit_bentuk_pembelajaran"
+                                                    name="bentuk_pembelajaran">
                                             </div>
                                             <div class="mb-2">
                                                 <label>Bobot Penilaian</label>
-                                                <input type="number" class="form-control" id="edit_bobot_penilaian" name="bobot_penilaian" min="0" max="100">
+                                                <input type="number" class="form-control" id="edit_bobot_penilaian" name="bobot_penilaian">
                                             </div>
+                                            <div class="mb-2">
+                                                <label>Materi</label>
+                                                <textarea class="form-control" id="edit_materi" name="materi" rows="3" maxlength="255" oninput="updateCount('materi', 'materiCount')"></textarea>
+                                                <small class="text-muted text-xs float-end">
+                                                    <span id="materiCount">0</span>/255
+                                                </small>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label>Catatan</label>
+                                                <textarea class="form-control" id="edit_catatan" name="catatan" rows="3" maxlength="255" oninput="updateCount('catatan', 'catatanCount')"></textarea>
+                                                <small class="text-muted text-xs float-end">
+                                                    <span id="catatanCount">0</span>/255
+                                                </small>
+                                            </div>
+
                                         </div>
 
                                         <div class="modal-footer">
@@ -212,40 +251,41 @@
                                         </div>
 
                                     </form>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Jika Data Tidak Ditemukan -->
-        <div class="modal fade" id="modalNotFound" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                    <div class="modal-header bg-danger">
-                        <h5 class="modal-title text-white">Data Tidak Ditemukan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body text-center">
-                        <p id="notFoundMessage" class="mb-0">Data tidak tersedia.</p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Tutup
-                        </button>
-                    </div>
-
-                </div>
+                    </div><!-- responsive -->
+                </div><!-- card-body -->
             </div>
         </div>
     </div>
+
+    <!-- Modal Jika Data Tidak Ditemukan -->
+    <div class="modal fade" id="modalNotFound" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white">Data Tidak Ditemukan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <p id="notFoundMessage" class="mb-0">Data tidak tersedia.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <body class="bg-primary">
         <?php
@@ -265,15 +305,15 @@
             }
 
             document.addEventListener("DOMContentLoaded", function() {
-                updateCount('cpmk', 'cpmkCount');
-                updateCount('subcpmk', 'subcpmkCount');
+                updateCount('materi', 'materiCount');
+                updateCount('catatan', 'catatanCount');
             });
 
             // Hapus Data
             function deleteData() {
                 if (!window.deleteId) return;
                 $.ajax({
-                    url: "/korelasi-cpl-cpmk/deleteById",
+                    url: "/rencana-pembelajaran/deleteById",
                     method: "POST",
                     data: {
                         id: window.deleteId
@@ -287,7 +327,7 @@
                                 icon: "success",
                                 timer: 2000
                             });
-                            $('#tableCPLCPMK').DataTable().ajax.reload(null, false);
+                            $('#tableRPL').DataTable().ajax.reload(null, false);
                         } else {
                             Swal.fire({
                                 title: "Gagal",
@@ -343,12 +383,12 @@
                 }
 
                 // Inisialisasi DataTable
-                let table = $('#tableCPLCPMK').DataTable({
+                let table = $('#tableRPL').DataTable({
                     processing: true,
                     serverSide: true,
                     scrollX: true,
                     ajax: {
-                        url: "<?= base_url('korelasi-cpl-cpmk/getData') ?>",
+                        url: "<?= base_url('rencana-pembelajaran/getData') ?>",
                         type: "POST"
                     },
                     columns: [{
@@ -368,16 +408,28 @@
                         },
 
                         {
-                            data: "cpmk"
+                            data: "minggu_ke"
                         },
                         {
                             data: "sub_cpmk"
                         },
                         {
-                            data: "persentase"
+                            data: "penilaian_indikator"
+                        },
+                        {
+                            data: "penilaian_teknik"
+                        },
+                        {
+                            data: "bentuk_pembelajaran"
+                        },
+                        {
+                            data: "materi"
                         },
                         {
                             data: "bobot_penilaian"
+                        },
+                        {
+                            data: "catatan"
                         },
                         {
                             data: null,
@@ -398,17 +450,17 @@
                 });
 
                 // Hapus Data
-                $('#tableCPLCPMK').on('click', '.btnDelete', function() {
+                $('#tableRPL').on('click', '.btnDelete', function() {
                     window.deleteId = $(this).data('id');
                     $('#modalDelete').modal('show');
                 });
 
                 // Edit Data
-                $('#tableCPLCPMK').on('click', '.btnEdit', function() {
+                $('#tableRPL').on('click', '.btnEdit', function() {
                     let id = $(this).data('id');
 
                     $.ajax({
-                        url: "/korelasi-cpl-cpmk/getById",
+                        url: "/rencana-pembelajaran/getById",
                         data: {
                             id: id
                         },
@@ -420,10 +472,14 @@
                                 $('#edit_id').val(d.id);
                                 $('#edit_id_penyusun').val(d.id_penyusun);
                                 $('#edit_id_matakuliah').val(d.id_matakuliah);
-                                $('#edit_cpmk').val(d.cpmk);
+                                $('#edit_minggu_ke').val(d.minggu_ke);
                                 $('#edit_sub_cpmk').val(d.sub_cpmk);
-                                $('#edit_persentase').val(d.persentase);
+                                $('#edit_penilaian_indikator').val(d.penilaian_indikator);
+                                $('#edit_penilaian_teknik').val(d.penilaian_teknik);
+                                $('#edit_bentuk_pembelajaran').val(d.bentuk_pembelajaran);
+                                $('#edit_materi').val(d.materi);
                                 $('#edit_bobot_penilaian').val(d.bobot_penilaian);
+                                $('#edit_catatan').val(d.catatan);
 
                                 $('#modalEdit').modal('show');
                             } else {
@@ -451,6 +507,7 @@
         </script>
 
     </body>
+
 </main>
 
 <style>

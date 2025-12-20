@@ -3,23 +3,23 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\NilaiMhsPertemuanModel;
+use App\Models\RencanaPembelajaranModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class NilaiMhsPertemuan extends BaseController
+class RencanaPembelajaran extends BaseController
 {
     public function index()
     {
-        return view('nilai_mhs_pertemuan');
+        return view('rencana_pembelajaran');
     }
 
     public function getData()
     {
-        $model = new NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
 
         $draw = $this->request->getPost('draw');
         $start = $this->request->getPost('start');
@@ -31,7 +31,9 @@ class NilaiMhsPertemuan extends BaseController
 
         // Filtering
         if (!empty($searchValue)) {
-            $model->like('nim', $searchValue);
+            $model->like('sub_cpmk', $searchValue)
+                ->orLike('penilaian_indikator', $searchValue)
+                ->orLike('materi', $searchValue);
         }
 
         $totalFiltered = $model->countAllResults(false);
@@ -49,30 +51,35 @@ class NilaiMhsPertemuan extends BaseController
 
     public function createData()
     {
-        $model = new NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
 
         $data = [
-            'nim' => $this->request->getPost('nim'),
-            'id_rencana_pembelajaran' => $this->request->getPost('id_rencana_pembelajaran'),
-            'nilai_kompetensi' => $this->request->getPost('nilai_kompetensi'),
-            'status' => $this->request->getPost('status'),
-            'keterangan' => $this->request->getPost('keterangan')
+            'id_penyusun' => $this->request->getPost('id_penyusun'),
+            'id_matakuliah' => $this->request->getPost('id_matakuliah'),
+            'minggu_ke' => $this->request->getPost('minggu_ke'),
+            'sub_cpmk' => $this->request->getPost('sub_cpmk'),
+            'penilaian_indikator' => $this->request->getPost('penilaian_indikator'),
+            'penilaian_teknik' => $this->request->getPost('penilaian_teknik'),
+            'bentuk_pembelajaran' => $this->request->getPost('bentuk_pembelajaran'),
+            'materi' => $this->request->getPost('materi'),
+            'bobot_penilaian' => $this->request->getPost('bobot_penilaian'),
+            'catatan' => $this->request->getPost('catatan'),
         ];
 
-        if (empty($data['nim']) || empty($data['id_rencana_pembelajaran']) || empty($data['nilai_kompetensi'])) {
+        if (empty($data['id_penyusun']) || empty($data['id_matakuliah']) || empty($data['minggu_ke'])) {
             return redirect()->back()->with('error', 'Data wajib belum lengkap.');
         }
 
         if ($model->insert($data)) {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('success', 'Data berhasil ditambahkan.');
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil ditambahkan.');
         } else {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Gagal menambahkan data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal menambahkan data.');
         }
     }
 
     public function updateById()
     {
-        $model = new NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
 
         $id = $this->request->getPost('id');
         if (!$id) {
@@ -80,17 +87,22 @@ class NilaiMhsPertemuan extends BaseController
         }
 
         $data = [
-            'nim' => $this->request->getPost('nim'),
-            'id_rencana_pembelajaran' => $this->request->getPost('id_rencana_pembelajaran'),
-            'nilai_kompetensi' => $this->request->getPost('nilai_kompetensi'),
-            'status' => $this->request->getPost('status'),
-            'keterangan' => $this->request->getPost('keterangan')
+            'id_penyusun' => $this->request->getPost('id_penyusun'),
+            'id_matakuliah' => $this->request->getPost('id_matakuliah'),
+            'minggu_ke' => $this->request->getPost('minggu_ke'),
+            'sub_cpmk' => $this->request->getPost('sub_cpmk'),
+            'penilaian_indikator' => $this->request->getPost('penilaian_indikator'),
+            'penilaian_teknik' => $this->request->getPost('penilaian_teknik'),
+            'bentuk_pembelajaran' => $this->request->getPost('bentuk_pembelajaran'),
+            'materi' => $this->request->getPost('materi'),
+            'bobot_penilaian' => $this->request->getPost('bobot_penilaian'),
+            'catatan' => $this->request->getPost('catatan'),
         ];
 
         if ($model->update($id, $data)) {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('success', 'Data berhasil diperbarui.');
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil diperbarui.');
         } else {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Gagal memperbarui data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal memperbarui data.');
         }
     }
 
@@ -105,7 +117,7 @@ class NilaiMhsPertemuan extends BaseController
             ]);
         }
 
-        $model = new NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
         $data = $model->find($id);
 
         if (!$data) {
@@ -132,7 +144,7 @@ class NilaiMhsPertemuan extends BaseController
             ]);
         }
 
-        $model = new NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
         $data = $model->find($id);
         if (!$data) {
             return $this->response->setJSON([
@@ -156,14 +168,14 @@ class NilaiMhsPertemuan extends BaseController
 
     public function exportExcel()
     {
-        $model = new \App\Models\NilaiMhsPertemuanModel();
+        $model = new RencanaPembelajaranModel();
         $data = $model->findAll();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'NILAI MAHASISWA');
-        $sheet->mergeCells('A1:E1');
+        $sheet->setCellValue('A1', 'RENCANA PEMBELAJARAN');
+        $sheet->mergeCells('A1:K1');
 
         $sheet->getStyle('A1')->applyFromArray([
             'font' => [
@@ -177,7 +189,7 @@ class NilaiMhsPertemuan extends BaseController
         ]);
 
         $sheet->setCellValue('A2', 'Program Studi Teknik Informatika');
-        $sheet->mergeCells('A2:E2');
+        $sheet->mergeCells('A2:K2');
 
         $sheet->getStyle('A2')->applyFromArray([
             'font' => [
@@ -190,12 +202,18 @@ class NilaiMhsPertemuan extends BaseController
         ]);
 
 
-        // Header
-        $sheet->setCellValue('A4', 'nim');
-        $sheet->setCellValue('B4', 'id_rencana_pembelajaran');
-        $sheet->setCellValue('C4', 'nilai_kompetensi');
-        $sheet->setCellValue('D4', 'status');
-        $sheet->setCellValue('E4', 'keterangan');
+        // Header kolom
+        $sheet->setCellValue('A4', 'ID');
+        $sheet->setCellValue('B4', 'ID Penyusun');
+        $sheet->setCellValue('C4', 'ID Mata Kuliah');
+        $sheet->setCellValue('D4', 'Minggu Ke');
+        $sheet->setCellValue('E4', 'Sub CPMK');
+        $sheet->setCellValue('F4', 'Indikator');
+        $sheet->setCellValue('G4', 'Teknik');
+        $sheet->setCellValue('H4', 'Bentuk Pembelajaran');
+        $sheet->setCellValue('I4', 'Materi');
+        $sheet->setCellValue('J4', 'Bobot');
+        $sheet->setCellValue('K4', 'Catatan');
 
         $headerStyle = [
             'font' => [
@@ -214,27 +232,33 @@ class NilaiMhsPertemuan extends BaseController
         ];
 
         // Terapkan ke header (A1 sampai D1)
-        $sheet->getStyle('A4:E4')->applyFromArray($headerStyle);
+        $sheet->getStyle('A4:K4')->applyFromArray($headerStyle);
 
 
-        // Data
+        // Isi data
         $row = 5;
         foreach ($data as $item) {
-            $sheet->setCellValue('A' . $row, $item['nim']);
-            $sheet->setCellValue('B' . $row, $item['id_rencana_pembelajaran']);
-            $sheet->setCellValue('C' . $row, $item['nilai_kompetensi']);
-            $sheet->setCellValue('D' . $row, $item['status']);
-            $sheet->setCellValue('E' . $row, $item['keterangan']);
+            $sheet->setCellValue('A' . $row, $item['id']);
+            $sheet->setCellValue('B' . $row, $item['id_penyusun']);
+            $sheet->setCellValue('C' . $row, $item['id_matakuliah']);
+            $sheet->setCellValue('D' . $row, $item['minggu_ke']);
+            $sheet->setCellValue('E' . $row, $item['sub_cpmk']);
+            $sheet->setCellValue('F' . $row, $item['penilaian_indikator']);
+            $sheet->setCellValue('G' . $row, $item['penilaian_teknik']);
+            $sheet->setCellValue('H' . $row, $item['bentuk_pembelajaran']);
+            $sheet->setCellValue('I' . $row, $item['materi']);
+            $sheet->setCellValue('J' . $row, $item['bobot_penilaian']);
+            $sheet->setCellValue('K' . $row, $item['catatan']);
             $row++;
         }
 
-        foreach (range('A', 'E') as $columnID) {
+        foreach (range('A', 'K') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
         $lastRow = $row - 1;
 
-        $sheet->getStyle("A4:E{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A4:K{$lastRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => Border::BORDER_THIN,
@@ -242,15 +266,16 @@ class NilaiMhsPertemuan extends BaseController
             ],
         ]);
 
-        $sheet->getStyle("A2:E{$lastRow}")
+        $sheet->getStyle("A2:K{$lastRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        $sheet->getStyle("E2:E{$lastRow}")
+        $sheet->getStyle("K2:K{$lastRow}")
             ->getAlignment()
             ->setWrapText(true);
 
-        $filename = 'Nilai Mahasiswa.xlsx';
+
+        $filename = 'Rencana Pembelajaran.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"$filename\"");

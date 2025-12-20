@@ -8,20 +8,11 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Tables</a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Nilai Pertemuan Mahasiswa</li>
                 </ol>
-                <h3 class="font-weight-bolder text-white mb-0">Tables</h3>
+                <!-- <h3 class="font-weight-bolder text-white mb-0">Tables</h3> -->
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                    <div class="input-group">
-                        <form action="<?= base_url('table/table3b71/cari') ?>" method="GET" id="searchForm">
-                            <span class="input-group-text text-body"><input type="search" id="searchInput" name="search" placeholder="Cari berdasarkan keterangan.." /><i class="fas fa-search" aria-hidden="true"></i></span>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -30,70 +21,41 @@
             <div class="col-12">
                 <div class="card mb-0">
                     <div class="card-header pb-0">
-                        <h5>nilai mahasiswa pertemuan</h5>
-                        <h6>Daftar Pencapaian</h6>
+                        <h5>Nilai Pertemuan Mahasiswa</h5>
+                        <h6>Daftar Penilaian</h6>
                         <!-- button tambah -->
                         <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
                             Tambah Data
                         </button>
+                        <a href="<?= site_url('nilai-pertemuan-mahasiswa/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table table-hover align-items-center mb-0">
+
+                    <div class="card-body pb-2">
+                        <div class="table-responsive">
+                            <table id="tableNP" class="table table-striped nowrap" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder ">No</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder ">Nim</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder">Rencana Pembelajaran</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder ">Nilai Kompetensi</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder ">Status</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder ">Keterangan</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder ">Aksi</th>
+                                        <th>ID</th>
+                                        <th>NIM</th>
+                                        <th>Rencana Pembelajaran</th>
+                                        <th>Nilai Kompetensi</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <?php $no = 1;
-                                    foreach ($items as $row): ?>
-                                        <tr>
-                                            <td class="text-center"><?= $no ?></td>
-                                            <td class="px-4"><?= $row['nim'] ?></td>
-                                            <td class="px-4"><?= $row['id_rencana_pembelajaran'] ?></td>
-                                            <td class="px-4"><?= $row['nilai_kompetensi'] ?></td>
-                                            <td class="px-4"><?= $row['status'] ?></td>
-                                            <td class="px-4"><?= $row['keterangan'] ?></td>
-                                            
-                                            <td class="text-center">
-                                                <a href="<?= base_url('table/nilai-mhs-pertemuan/' . $row['id'] . '/edit') ?>"
-                                                    class="btn bg-gradient-info btn-block">
-                                                    Edit
-                                                </a>
-
-                                                <a href="#"
-                                                    data-href="<?= base_url('table/nilai-mhs-pertemuan/' . $row['id'] . '/delete') ?>"
-                                                    onclick="confirmToDelete(this)"
-                                                    class="btn bg-gradient-danger btn-block"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#confirm-dialog">
-                                                    Hapus
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php $no++;
-                                    endforeach; ?>
-                                </tbody>
                             </table>
 
-                            <!-- js message data tidak ditemukan  -->
-                            <div id="resultMessage" class="result-message text-center"></div>
+                            <p id="resultMessage" class="text-danger text-center mt-3"></p>
 
-                            <!-- modal delete -->
-                            <div class="modal fade" id="confirm-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <!-- Modal Delete -->
+                            <div class="modal fade" id="modalDelete" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
                                             Apakah Anda yakin ingin menghapus data ini?
@@ -106,83 +68,60 @@
                                 </div>
                             </div>
 
-                            <!-- js delete -->
-                            <script>
-                                function confirmToDelete(element) {
-                                    var deleteButton = document.getElementById('confirm-dialog').querySelector('.btn-danger');
-                                    deleteButton.setAttribute('data-href', element.getAttribute('data-href'));
-                                }
-
-                                function deleteData() {
-                                    var deleteUrl = document.getElementById('confirm-dialog').querySelector('.btn-danger').getAttribute('data-href');
-
-                                    window.location.href = deleteUrl;
-                                }
-                            </script>
-
-                            <!-- modal tambah data -->
-                            <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                            <!-- Modal Create -->
+                            <div class="modal fade" id="modalCreate" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-body p-0">
                                             <div class="card card-plain">
 
                                                 <div class="card-header pb-0 text-left">
-                                                    <h3 class="font-weight-bolder text-primary text-gradient">Tambah Nilai Mahasiswa </h3>
-                                                    <p class="mb-0">Masukkan nilai mahasiswa</p>
+                                                    <h3 class="font-weight-bolder text-primary text-gradient">
+                                                        Tambah Nilai Pertemuan Mahasiswa
+                                                    </h3>
                                                 </div>
 
                                                 <div class="card-body pb-3">
-                                                    <form action="<?= base_url('table/nilai-mhs-pertemuan/new') ?>" method="post" role="form text-left">
-                                                        <label>Nim</label>
-                                                        <div class="input-group mb-3">
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="nim"
-                                                                placeholder="Masukkan nim"
-                                                                required>
-                                                        </div>
-                                                        <label>Rencana Pembelajaran</label>
-                                                        <div class="input-group mb-3">
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="id_rencana_pembelajaran"
-                                                                placeholder="Masukkan Rencana Pembelajaran"
-                                                                required>
-                                                        </div>
-                                                        <label>Nilai Kompetensi</label>
-                                                        <div class="input-group mb-3">
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="nilai_kompetensi"
-                                                                placeholder="Masukkan Nilai Kompetensi"
-                                                                required>
-                                                        </div>
-                                                        <label>Status</label>
-                                                        <div class="input-group mb-3">
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="status"
-                                                                placeholder="Masukkan Status"
-                                                                required>
-                                                        </div>
-                                                        <label>Keterangan</label>
-                                                        <div class="input-group mb-3">
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="keterangan"
-                                                                placeholder="Masukkan Keterangan"
-                                                                required>
-                                                        </div>
-                                                
+                                                    <form action="<?= base_url('nilai-pertemuan-mahasiswa/newData') ?>" method="post">
 
+                                                        <div class="mb-2">
+                                                            <label>NIM</label>
+                                                            <input type="number" name="nim" class="form-control mb-3" placeholder="Masukkan NIM" required>
+                                                        </div>
+                                                        <!-- Hardcode Rencana Pembelajaran -->
+                                                        <div class="mb-2">
+                                                            <label>Rencana Pembelajaran</label>
+                                                            <select name="id_rencana_pembelajaran" class="form-control mb-3" required>
+                                                                <option value="">-- Pilih Rencana Pembelajaran --</option>
+                                                                <option value="221">Harian</option>
+                                                                <option value="222">Mingguan</option>
+                                                                <option value="223">Bulanan</option>
+                                                                <option value="224">Semester</option>
+                                                                <option value="225">Tahunan</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Nilai Kompetensi</label>
+                                                            <input type="text" name="nilai_kompetensi" class="form-control mb-3" placeholder="Masukkan Kompetensi" required>
+                                                        </div>
+                                                        <!-- Hardcode Status -->
+                                                        <div class="mb-2">
+                                                            <label>Status</label>
+                                                            <select name="status" class="form-control mb-3" required>
+                                                                <option value="">-- Pilih Status --</option>
+                                                                <option value="Aktif">Aktif</option>
+                                                                <option value="Tidak Aktif">Tidak AKtif</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Keterangan</label>
+                                                            <textarea name="keterangan" class="form-control mb-3" rows="3" maxlength="255" oninput="updateCount('keterangan', 'keteranganCount')" placeholder="Masukkan Keterangan"></textarea>
+                                                            <small class="text-muted text-xs float-end">
+                                                                <span id="ketCount">0</span>/255
+                                                            </small>
+                                                        </div>
                                                         <div class="text-center">
-                                                            <button type="submit" class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">
+                                                            <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
                                                                 Tambah
                                                             </button>
                                                         </div>
@@ -195,62 +134,306 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Modal Edit -->
+                            <div class="modal fade" id="modalEdit" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+
+                                        <form id="formEdit" action="<?= base_url('nilai-pertemuan-mahasiswa/updateData') ?>" method="post">
+
+                                            <div class="card-header pb-0 text-left">
+                                                <h3 class="font-weight-bolder text-primary text-gradient">
+                                                    Edit Nilai Pertemuan Mahasiswa
+                                                </h3>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <input type="hidden" name="id" id="edit_id">
+
+                                                <div class="mb-2">
+                                                    <label>NIM</label>
+                                                    <input type="text" name="nim" id="edit_nim" class="form-control">
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label>Rencana Pembelajaran</label>
+                                                    <select name="id_rencana_pembelajaran" id="edit_id_rencana_pembelajaran" class="form-control">
+                                                        <option value="221">Harian</option>
+                                                        <option value="222">Mingguan</option>
+                                                        <option value="223">Bulanan</option>
+                                                        <option value="224">Semester</option>
+                                                        <option value="225">Tahunan</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label>Nilai Kompetensi</label>
+                                                    <input type="text" name="nilai_kompetensi" id="edit_nilai_kompetensi" class="form-control">
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label>Status</label>
+                                                    <select name="status" id="edit_status" class="form-control mb-3">
+                                                        <option value="Aktif">Aktif</option>
+                                                        <option value="Tidak Aktif">Tidak AKtif</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label>Keterangan</label>
+                                                    <textarea name="keterangan" id="edit_keterangan" class="form-control"></textarea>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
 
+    <!-- Modal Jika Data Tidak Ditemukan -->
+    <div class="modal fade" id="modalNotFound" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white">Data Tidak Ditemukan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
+                <div class="modal-body text-center">
+                    <p id="notFoundMessage" class="mb-0">Data tidak tersedia.</p>
+                </div>
 
-<body class="g-sidenav-show bg-primary">
-    <div class="min-height-300 bg-gray-100 position-absolute w-100"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
 
-    <!-- js search -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchForm = document.getElementById("searchForm");
-            const searchInput = document.getElementById("searchInput");
-            const resultMessage = document.getElementById("resultMessage");
-            const tableBody = document.querySelector(".table tbody");
+            </div>
+        </div>
+    </div>
 
-            function filterRows() {
-                const searchText = searchInput.value.toLowerCase();
-                let foundRows = 0;
+    <body class="bg-primary">
+        <?php
+        $success = session()->getFlashdata('success');
+        $error = session()->getFlashdata('error');
+        ?>
 
-                tableBody.querySelectorAll("tr").forEach(function(row, index) {
-                    const cells = row.querySelectorAll("td");
-                    const kategoriText = cells[3].textContent.toLowerCase(); // Ubah sesuai dengan indeks kolom yang berisi kategori
+        <script>
+            const flashSuccess = "<?= $success ?>";
+            const flashError = "<?= $error ?>";
 
-                    if (kategoriText.includes(searchText)) {
-                        row.style.display = "";
-                        foundRows++;
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-
-                if (foundRows === 0) {
-                    resultMessage.textContent = "Data tidak ditemukan";
-                } else {
-                    resultMessage.textContent = "";
-                }
+            // Hitung Jumlah Karakter
+            function updateCount(fieldName, counterId) {
+                const field = document.getElementsByName(fieldName)[0];
+                const counter = document.getElementById(counterId);
+                counter.textContent = field.value.length;
             }
 
-            searchForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-                filterRows();
+            // Hapus Data
+            function deleteData() {
+                if (!window.deleteId) return;
+                $.ajax({
+                    url: "/nilai-pertemuan-mahasiswa/deleteById",
+                    method: "POST",
+                    data: {
+                        id: window.deleteId
+                    },
+                    success: function(res) {
+                        $('#modalDelete').modal('hide');
+                        if (res.status === true) {
+                            Swal.fire({
+                                title: "Berhasil",
+                                text: res.message,
+                                icon: "success",
+                                timer: 2000
+                            });
+                            $('#tableNP').DataTable().ajax.reload(null, false);
+                        } else {
+                            Swal.fire({
+                                title: "Gagal",
+                                text: res.message,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function() {
+                        let msg = "Terjadi kesalahan pada server.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: "Gagal",
+                            text: res.message,
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+
+            $(document).ready(function() {
+                const rencanaPembelajaranList = {
+                    221: "Harian",
+                    222: "Mingguan",
+                    223: "Bulanan",
+                    224: "Semester",
+                    225: "Tahunan",
+                }
+
+                if (flashSuccess) {
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: flashSuccess,
+                        icon: "success",
+                        timer: 2000
+                    });
+                }
+
+                if (flashError) {
+                    Swal.fire({
+                        title: "Gagal",
+                        text: flashError,
+                        icon: "error"
+                    });
+                }
+
+                // Inisialisasi DataTable
+                let table = $('#tableNP').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    scrollX: true,
+                    ajax: {
+                        url: "<?= base_url('nilai-pertemuan-mahasiswa/getData') ?>",
+                        type: "POST"
+                    },
+                    columns: [{
+                            data: "id"
+                        },
+                        {
+                            data: "nim"
+                        },
+                        {
+                            data: "id_rencana_pembelajaran",
+                            render: function(val) {
+                                return rencanaPembelajaranList[val] ?? "Tidak diketahui";
+                            }
+                        },
+                        {
+                            data: "nilai_kompetensi"
+                        },
+                        {
+                            data: "status"
+                        },
+                        {
+                            data: "keterangan"
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return `
+                                    <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
+                                    Edit
+                                    </button>
+                                    <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
+                                    Hapus
+                                    </button>`;
+                            }
+                        }
+                    ]
+                });
+                document.querySelectorAll('.dt-button').forEach(btn => {
+                    btn.classList.remove('dt-button');
+                });
+
+                // Hapus Data
+                $('#tableNP').on('click', '.btnDelete', function() {
+                    window.deleteId = $(this).data('id');
+                    $('#modalDelete').modal('show');
+                });
+
+                // Edit Data
+                $('#tableNP').on('click', '.btnEdit', function() {
+                    let id = $(this).data('id');
+
+                    $.ajax({
+                        url: "/nilai-pertemuan-mahasiswa/getById",
+                        data: {
+                            id: id
+                        },
+                        method: "GET",
+                        success: function(res) {
+                            if (res.status === true) {
+                                let d = res.data;
+
+                                $('#edit_id').val(d.id);
+                                $('#edit_nim').val(d.nim);
+                                $('#edit_id_rencana_pembelajaran').val(d.id_rencana_pembelajaran);
+                                $('#edit_nilai_kompetensi').val(d.nilai_kompetensi);
+                                $('#edit_status').val(d.status);
+                                $('#edit_keterangan').val(d.keterangan);
+
+                                $('#modalEdit').modal('show');
+                            } else {
+                                Swal.fire({
+                                    title: "Gagal",
+                                    text: res.message || "Data tidak ditemukan.",
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            let msg = "Terjadi kesalahan saat mengambil data.";
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                msg = xhr.responseJSON.message;
+                            }
+                            Swal.fire({
+                                title: "Gagal",
+                                text: msg,
+                                icon: "error"
+                            });
+                        }
+                    });
+                });
             });
+        </script>
 
-            searchInput.addEventListener("input", filterRows);
+    </body>
 
-            filterRows();
-        });
-    </script>
+</main>
 
-</body>
+<style>
+    #modalCreate {
+        z-index: 9999 !important;
+    }
+
+    .sidenav {
+        z-index: 2000 !important;
+    }
+
+    .modal-backdrop {
+        z-index: 2000 !important;
+    }
+
+    .modal {
+        z-index: 2050 !important;
+    }
+</style>
 
 <?= $this->endSection() ?>

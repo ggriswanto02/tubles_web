@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class NilaiMhsPertemuanModel extends Model
+class CapaianLulusanModel extends Model
 {
-    protected $table            = 'nilai_mhs_pertemuan';
+    protected $table            = 'capaian_lulusan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -14,15 +14,13 @@ class NilaiMhsPertemuanModel extends Model
     protected $protectFields    = true;
 
     protected $allowedFields    = [
-        'nim',
-        'id_rencana_pembelajaran',
-        'nilai_kompetensi',
-        'status',
-        'keterangan',
+        'id_penyusun',
+        'id_matakuliah',
+        'cpl_prodi',
     ];
 
     // Dates
-    protected $useTimestamps = true; // aktifkan jika tabel punya created_at & updated_at
+    protected $useTimestamps = true; 
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
