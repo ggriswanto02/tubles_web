@@ -21,28 +21,25 @@
             <div class="col-12">
                 <div class="card mb-0">
                     <div class="card-header pb-0">
-                        <h5>Korelasi Capaian Pembelajaran</h5>
+                        <h5>Capaian Lulusan</h5>
                         <h6>Daftar Pencapaian</h6>
                         <!-- button tambah -->
                         <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
                             Tambah Data
                         </button>
-                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>" class="btn btn-success mb-3">Export Excel</a>
+                        <a href="<?= base_url('capaian-lulusan/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
 
                     <div class="card-body pb-2">
                         <div class="table-responsive">
-                            <table id="tableCPLCPMK" class="table table-striped nowrap" style="width:100%">
+                            <table id="tableCPL" class="table table-striped nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Penyusun</th>
                                         <th>Matakuliah</th>
-                                        <th>Capaian Pembelajaran</th>
-                                        <th>Sub Capaian Pembelajaran</th>
-                                        <th>Persentase (%)</th>
-                                        <th>Bobot Penilaian</th>
+                                        <th>Prodi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -79,12 +76,12 @@
 
                                             <div class="card-header pb-0 text-left">
                                                 <h3 class="font-weight-bolder text-primary text-gradient">
-                                                    Tambah Korelasi CPL-CPMK
+                                                    Tambah Capaian Lulusan
                                                 </h3>
                                             </div>
 
                                             <div class="card-body pb-3">
-                                                <form action="<?= base_url('korelasi-cpl-cpmk/newData') ?>" method="post">
+                                                <form action="<?= base_url('capaian-lulusan/newData') ?>" method="post">
 
                                                     <!-- Hardcode Penyusun -->
                                                     <div class="mb-2">
@@ -109,26 +106,8 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label>CPMK</label>
-                                                        <textarea name="cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
-                                                        <small class="text-muted text-xs float-end">
-                                                            <span id="cpmkCount">0</span>/255
-                                                        </small>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label>Sub CPMK</label>
-                                                        <textarea name="sub_cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('sub_cpmk', 'subCount')" placeholder="Masukkan Sub CPMK"></textarea>
-                                                        <small class="text-muted text-xs float-end">
-                                                            <span id="subCount">0</span>/255
-                                                        </small>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label>Persentase (%)</label>
-                                                        <input type="number" name="persentase" class="form-control" placeholder="Masukkan Persentase (0–100)" min="0" max="100" required>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label>Bobot Penilaian</label>
-                                                        <input type="number" name="bobot_penilaian" class="form-control" placeholder="Masukkan Bobot (0–100)" min="0" max="100" required>
+                                                        <label>Prodi</label>
+                                                        <input type="text" name="cpl_prodi" class="form-control mb-3" placeholder="Masukkan Prodi" required>
                                                     </div>
                                                     <div class="text-center">
                                                         <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
@@ -150,11 +129,11 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
 
-                                    <form id="formEdit" action="<?= base_url('korelasi-cpl-cpmk/updateData') ?>" method="post">
+                                    <form id="formEdit" action="<?= base_url('capaian-lulusan/updateData') ?>" method="post">
 
                                         <div class="card-header pb-0 text-left">
                                             <h3 class="font-weight-bolder text-primary text-gradient">
-                                                Edit Korelasi CPL-CPMK
+                                                Edit Capaian Lulusan
                                             </h3>
                                         </div>
 
@@ -183,26 +162,8 @@
                                                 </select>
                                             </div>
                                             <div class="mb-2">
-                                                <label>CPMK</label>
-                                                <textarea class="form-control" id="edit_cpmk" name="cpmk" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
-                                                <small class="text-muted text-xs float-end">
-                                                    <span id="cpmkCount">0</span>/255
-                                                </small>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label>Sub CPMK</label>
-                                                <textarea class="form-control" id="edit_sub_cpmk" name="sub_cpmk" rows="3" maxlength="255" oninput="updateCount('subcpmk', 'subcpmkCount')" placeholder="Masukkan Sub CPMK"></textarea>
-                                                <small class="text-muted text-xs float-end">
-                                                    <span id="subcpmkCount">0</span>/255
-                                                </small>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label>Persentase (%)</label>
-                                                <input type="number" class="form-control" id="edit_persentase" name="persentase" min="0" max="100">
-                                            </div>
-                                            <div class="mb-2">
-                                                <label>Bobot Penilaian</label>
-                                                <input type="number" class="form-control" id="edit_bobot_penilaian" name="bobot_penilaian" min="0" max="100">
+                                                <label>Prodi</label>
+                                                <input type="text" name="cpl_prodi" id="edit_cpl_prodi" class="form-control">
                                             </div>
                                         </div>
 
@@ -257,23 +218,11 @@
             const flashSuccess = "<?= $success ?>";
             const flashError = "<?= $error ?>";
 
-            // Hitung Jumlah Karakter
-            function updateCount(fieldName, counterId) {
-                const field = document.getElementsByName(fieldName)[0];
-                const counter = document.getElementById(counterId);
-                counter.textContent = field.value.length;
-            }
-
-            document.addEventListener("DOMContentLoaded", function() {
-                updateCount('cpmk', 'cpmkCount');
-                updateCount('subcpmk', 'subcpmkCount');
-            });
-
             // Hapus Data
             function deleteData() {
                 if (!window.deleteId) return;
                 $.ajax({
-                    url: "/korelasi-cpl-cpmk/deleteById",
+                    url: "/capaian-lulusan/deleteById",
                     method: "POST",
                     data: {
                         id: window.deleteId
@@ -287,7 +236,7 @@
                                 icon: "success",
                                 timer: 2000
                             });
-                            $('#tableCPLCPMK').DataTable().ajax.reload(null, false);
+                            $('#tableCPL').DataTable().ajax.reload(null, false);
                         } else {
                             Swal.fire({
                                 title: "Gagal",
@@ -343,12 +292,12 @@
                 }
 
                 // Inisialisasi DataTable
-                let table = $('#tableCPLCPMK').DataTable({
+                let table = $('#tableCPL').DataTable({
                     processing: true,
                     serverSide: true,
                     scrollX: true,
                     ajax: {
-                        url: "<?= base_url('korelasi-cpl-cpmk/getData') ?>",
+                        url: "<?= base_url('capaian-lulusan/getData') ?>",
                         type: "POST"
                     },
                     columns: [{
@@ -368,27 +317,18 @@
                         },
 
                         {
-                            data: "cpmk"
-                        },
-                        {
-                            data: "sub_cpmk"
-                        },
-                        {
-                            data: "persentase"
-                        },
-                        {
-                            data: "bobot_penilaian"
+                            data: "cpl_prodi"
                         },
                         {
                             data: null,
                             render: function(data, type, row) {
                                 return `
-                                <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
-                                Edit
-                                </button>
-                                <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
-                                Hapus
-                                </button>`;
+                            <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
+                            Edit
+                            </button>
+                            <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
+                            Hapus
+                            </button>`;
                             }
                         }
                     ]
@@ -398,17 +338,17 @@
                 });
 
                 // Hapus Data
-                $('#tableCPLCPMK').on('click', '.btnDelete', function() {
+                $('#tableCPL').on('click', '.btnDelete', function() {
                     window.deleteId = $(this).data('id');
                     $('#modalDelete').modal('show');
                 });
 
                 // Edit Data
-                $('#tableCPLCPMK').on('click', '.btnEdit', function() {
+                $('#tableCPL').on('click', '.btnEdit', function() {
                     let id = $(this).data('id');
 
                     $.ajax({
-                        url: "/korelasi-cpl-cpmk/getById",
+                        url: "/capaian-lulusan/getById",
                         data: {
                             id: id
                         },
@@ -420,10 +360,7 @@
                                 $('#edit_id').val(d.id);
                                 $('#edit_id_penyusun').val(d.id_penyusun);
                                 $('#edit_id_matakuliah').val(d.id_matakuliah);
-                                $('#edit_cpmk').val(d.cpmk);
-                                $('#edit_sub_cpmk').val(d.sub_cpmk);
-                                $('#edit_persentase').val(d.persentase);
-                                $('#edit_bobot_penilaian').val(d.bobot_penilaian);
+                                $('#edit_cpl_prodi').val(d.cpl_prodi);
 
                                 $('#modalEdit').modal('show');
                             } else {
@@ -451,6 +388,7 @@
         </script>
 
     </body>
+
 </main>
 
 <style>
