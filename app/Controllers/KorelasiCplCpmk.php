@@ -51,6 +51,9 @@ class KorelasiCplCpmk extends BaseController
 
     public function createData()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('korelasi-cpl-cpmk')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new KorelasiCplCpmkModel();
 
         $data = [
@@ -75,6 +78,9 @@ class KorelasiCplCpmk extends BaseController
 
     public function updateById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('korelasi-cpl-cpmk')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new KorelasiCplCpmkModel();
 
         $id = $this->request->getPost('id');

@@ -50,6 +50,9 @@ class CapaianLulusan extends BaseController
 
     public function createData()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new CapaianLulusanModel();
 
         $data = [
@@ -71,6 +74,9 @@ class CapaianLulusan extends BaseController
 
     public function updateById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new CapaianLulusanModel();
 
         $id = $this->request->getPost('id');
@@ -120,6 +126,9 @@ class CapaianLulusan extends BaseController
 
     public function deleteById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $id = $this->request->getPost('id');
 
         if (!$id) {
