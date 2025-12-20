@@ -4,7 +4,8 @@
 
 <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
+        data-scroll="false">
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
@@ -24,9 +25,10 @@
                         <h5>Nilai Pertemuan Mahasiswa</h5>
                         <h6>Daftar Penilaian</h6>
                         <!-- button tambah -->
-                        <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
-                            Tambah Data
-                        </button>
+                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                            <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
+                                data-bs-target="#modalCreate">Tambah Data</button>
+                        <?php endif ?>
                         <a href="<?= site_url('nilai-pertemuan-mahasiswa/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
@@ -49,155 +51,157 @@
 
                             <p id="resultMessage" class="text-danger text-center mt-3"></p>
 
-                            <!-- Modal Delete -->
-                            <div class="modal fade" id="modalDelete" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah Anda yakin ingin menghapus data ini?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                            <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                                <!-- Modal Delete -->
+                                <div class="modal fade" id="modalDelete" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah Anda yakin ingin menghapus data ini?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Modal Create -->
-                            <div class="modal fade" id="modalCreate" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card card-plain">
+                                <!-- Modal Create -->
+                                <div class="modal fade" id="modalCreate" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body p-0">
+                                                <div class="card card-plain">
+
+                                                    <div class="card-header pb-0 text-left">
+                                                        <h3 class="font-weight-bolder text-primary text-gradient">
+                                                            Tambah Nilai Pertemuan Mahasiswa
+                                                        </h3>
+                                                    </div>
+
+                                                    <div class="card-body pb-3">
+                                                        <form action="<?= base_url('nilai-pertemuan-mahasiswa/newData') ?>" method="post">
+
+                                                            <div class="mb-2">
+                                                                <label>NIM</label>
+                                                                <input type="number" name="nim" class="form-control mb-3" placeholder="Masukkan NIM" required>
+                                                            </div>
+                                                            <!-- Hardcode Rencana Pembelajaran -->
+                                                            <div class="mb-2">
+                                                                <label>Rencana Pembelajaran</label>
+                                                                <select name="id_rencana_pembelajaran" class="form-control mb-3" required>
+                                                                    <option value="">-- Pilih Rencana Pembelajaran --</option>
+                                                                    <option value="221">Harian</option>
+                                                                    <option value="222">Mingguan</option>
+                                                                    <option value="223">Bulanan</option>
+                                                                    <option value="224">Semester</option>
+                                                                    <option value="225">Tahunan</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-2">
+                                                                <label>Nilai Kompetensi</label>
+                                                                <input type="text" name="nilai_kompetensi" class="form-control mb-3" placeholder="Masukkan Kompetensi" required>
+                                                            </div>
+                                                            <!-- Hardcode Status -->
+                                                            <div class="mb-2">
+                                                                <label>Status</label>
+                                                                <select name="status" class="form-control mb-3" required>
+                                                                    <option value="">-- Pilih Status --</option>
+                                                                    <option value="Aktif">Aktif</option>
+                                                                    <option value="Tidak Aktif">Tidak AKtif</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-2">
+                                                                <label>Keterangan</label>
+                                                                <textarea name="keterangan" class="form-control mb-3" rows="3" maxlength="255" oninput="updateCount('keterangan', 'keteranganCount')" placeholder="Masukkan Keterangan"></textarea>
+                                                                <small class="text-muted text-xs float-end">
+                                                                    <span id="ketCount">0</span>/255
+                                                                </small>
+                                                            </div>
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                                                                    Tambah
+                                                                </button>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Edit -->
+                                <div class="modal fade" id="modalEdit" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <form id="formEdit" action="<?= base_url('nilai-pertemuan-mahasiswa/updateData') ?>" method="post">
 
                                                 <div class="card-header pb-0 text-left">
                                                     <h3 class="font-weight-bolder text-primary text-gradient">
-                                                        Tambah Nilai Pertemuan Mahasiswa
+                                                        Edit Nilai Pertemuan Mahasiswa
                                                     </h3>
                                                 </div>
 
-                                                <div class="card-body pb-3">
-                                                    <form action="<?= base_url('nilai-pertemuan-mahasiswa/newData') ?>" method="post">
+                                                <div class="modal-body">
 
-                                                        <div class="mb-2">
-                                                            <label>NIM</label>
-                                                            <input type="number" name="nim" class="form-control mb-3" placeholder="Masukkan NIM" required>
-                                                        </div>
-                                                        <!-- Hardcode Rencana Pembelajaran -->
-                                                        <div class="mb-2">
-                                                            <label>Rencana Pembelajaran</label>
-                                                            <select name="id_rencana_pembelajaran" class="form-control mb-3" required>
-                                                                <option value="">-- Pilih Rencana Pembelajaran --</option>
-                                                                <option value="221">Harian</option>
-                                                                <option value="222">Mingguan</option>
-                                                                <option value="223">Bulanan</option>
-                                                                <option value="224">Semester</option>
-                                                                <option value="225">Tahunan</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label>Nilai Kompetensi</label>
-                                                            <input type="text" name="nilai_kompetensi" class="form-control mb-3" placeholder="Masukkan Kompetensi" required>
-                                                        </div>
-                                                        <!-- Hardcode Status -->
-                                                        <div class="mb-2">
-                                                            <label>Status</label>
-                                                            <select name="status" class="form-control mb-3" required>
-                                                                <option value="">-- Pilih Status --</option>
-                                                                <option value="Aktif">Aktif</option>
-                                                                <option value="Tidak Aktif">Tidak AKtif</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label>Keterangan</label>
-                                                            <textarea name="keterangan" class="form-control mb-3" rows="3" maxlength="255" oninput="updateCount('keterangan', 'keteranganCount')" placeholder="Masukkan Keterangan"></textarea>
-                                                            <small class="text-muted text-xs float-end">
-                                                                <span id="ketCount">0</span>/255
-                                                            </small>
-                                                        </div>
-                                                        <div class="text-center">
-                                                            <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
-                                                                Tambah
-                                                            </button>
-                                                        </div>
+                                                    <input type="hidden" name="id" id="edit_id">
 
-                                                    </form>
+                                                    <div class="mb-2">
+                                                        <label>NIM</label>
+                                                        <input type="text" name="nim" id="edit_nim" class="form-control">
+                                                    </div>
+
+                                                    <div class="mb-2">
+                                                        <label>Rencana Pembelajaran</label>
+                                                        <select name="id_rencana_pembelajaran" id="edit_id_rencana_pembelajaran" class="form-control">
+                                                            <option value="221">Harian</option>
+                                                            <option value="222">Mingguan</option>
+                                                            <option value="223">Bulanan</option>
+                                                            <option value="224">Semester</option>
+                                                            <option value="225">Tahunan</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-2">
+                                                        <label>Nilai Kompetensi</label>
+                                                        <input type="text" name="nilai_kompetensi" id="edit_nilai_kompetensi" class="form-control">
+                                                    </div>
+
+                                                    <div class="mb-2">
+                                                        <label>Status</label>
+                                                        <select name="status" id="edit_status" class="form-control mb-3">
+                                                            <option value="Aktif">Aktif</option>
+                                                            <option value="Tidak Aktif">Tidak AKtif</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-2">
+                                                        <label>Keterangan</label>
+                                                        <textarea name="keterangan" id="edit_keterangan" class="form-control"></textarea>
+                                                    </div>
+
                                                 </div>
 
-                                            </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                </div>
+
+                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Modal Edit -->
-                            <div class="modal fade" id="modalEdit" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-
-                                        <form id="formEdit" action="<?= base_url('nilai-pertemuan-mahasiswa/updateData') ?>" method="post">
-
-                                            <div class="card-header pb-0 text-left">
-                                                <h3 class="font-weight-bolder text-primary text-gradient">
-                                                    Edit Nilai Pertemuan Mahasiswa
-                                                </h3>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <input type="hidden" name="id" id="edit_id">
-
-                                                <div class="mb-2">
-                                                    <label>NIM</label>
-                                                    <input type="text" name="nim" id="edit_nim" class="form-control">
-                                                </div>
-
-                                                <div class="mb-2">
-                                                    <label>Rencana Pembelajaran</label>
-                                                    <select name="id_rencana_pembelajaran" id="edit_id_rencana_pembelajaran" class="form-control">
-                                                        <option value="221">Harian</option>
-                                                        <option value="222">Mingguan</option>
-                                                        <option value="223">Bulanan</option>
-                                                        <option value="224">Semester</option>
-                                                        <option value="225">Tahunan</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-2">
-                                                    <label>Nilai Kompetensi</label>
-                                                    <input type="text" name="nilai_kompetensi" id="edit_nilai_kompetensi" class="form-control">
-                                                </div>
-
-                                                <div class="mb-2">
-                                                    <label>Status</label>
-                                                    <select name="status" id="edit_status" class="form-control mb-3">
-                                                        <option value="Aktif">Aktif</option>
-                                                        <option value="Tidak Aktif">Tidak AKtif</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-2">
-                                                    <label>Keterangan</label>
-                                                    <textarea name="keterangan" id="edit_keterangan" class="form-control"></textarea>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
+                            <?php endif ?>
 
                         </div>
                     </div>
@@ -239,6 +243,7 @@
         <script>
             const flashSuccess = "<?= $success ?>";
             const flashError = "<?= $error ?>";
+            const USER_ROLE = "<?= session('role') ?>";
 
             // Hitung Jumlah Karakter
             function updateCount(fieldName, counterId) {
@@ -346,14 +351,18 @@
                         },
                         {
                             data: null,
+                            orderable: false,
                             render: function(data, type, row) {
-                                return `
-                                    <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
-                                    Edit
-                                    </button>
-                                    <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
-                                    Hapus
-                                    </button>`;
+                                if (USER_ROLE === 'admin' || USER_ROLE === 'manajer') {
+                                    return `
+                                <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
+                                Edit
+                                </button>
+                                <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
+                                Hapus
+                                </button>`;
+                                }
+                                return '-';
                             }
                         }
                     ]

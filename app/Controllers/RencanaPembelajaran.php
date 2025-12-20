@@ -51,6 +51,9 @@ class RencanaPembelajaran extends BaseController
 
     public function createData()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new RencanaPembelajaranModel();
 
         $data = [
@@ -79,6 +82,9 @@ class RencanaPembelajaran extends BaseController
 
     public function updateById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new RencanaPembelajaranModel();
 
         $id = $this->request->getPost('id');
@@ -135,6 +141,9 @@ class RencanaPembelajaran extends BaseController
 
     public function deleteById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $id = $this->request->getPost('id');
 
         if (!$id) {
@@ -184,7 +193,7 @@ class RencanaPembelajaran extends BaseController
             ],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
             ],
         ]);
 

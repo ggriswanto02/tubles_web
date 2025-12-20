@@ -24,9 +24,11 @@
                         <h5>Capaian Lulusan</h5>
                         <h6>Daftar Pencapaian</h6>
                         <!-- button tambah -->
-                        <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
-                            Tambah Data
-                        </button>
+                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                            <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
+                                Tambah Data
+                            </button>
+                        <?php endif ?>
                         <a href="<?= base_url('capaian-lulusan/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
@@ -48,135 +50,137 @@
 
                         <p id="resultMessage" class="text-danger text-center mt-3"></p>
 
-                        <!-- Modal Delete -->
-                        <div class="modal fade" id="modalDelete" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Apakah Anda yakin ingin menghapus data ini?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                        <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                            <!-- Modal Delete -->
+                            <div class="modal fade" id="modalDelete" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus data ini?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Modal Create -->
-                        <div class="modal fade" id="modalCreate" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-body p-0">
-                                        <div class="card card-plain">
+                            <!-- Modal Create -->
+                            <div class="modal fade" id="modalCreate" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card card-plain">
+
+                                                <div class="card-header pb-0 text-left">
+                                                    <h3 class="font-weight-bolder text-primary text-gradient">
+                                                        Tambah Capaian Lulusan
+                                                    </h3>
+                                                </div>
+
+                                                <div class="card-body pb-3">
+                                                    <form action="<?= base_url('capaian-lulusan/newData') ?>" method="post">
+
+                                                        <!-- Hardcode Penyusun -->
+                                                        <div class="mb-2">
+                                                            <label>Penyusun</label>
+                                                            <select name="id_penyusun" class="form-control" required>
+                                                                <option value="">-- Pilih Penyusun --</option>
+                                                                <option value="1">Adam Kopikap</option>
+                                                                <option value="2">Dadang Batagor</option>
+                                                                <option value="3">Asep Retail</option>
+                                                                <option value="4">Tedi Pasar</option>
+                                                                <option value="5">Wawan Kuncen Cikuray</option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- Hardcode Mata Kuliah -->
+                                                        <div class="mb-2">
+                                                            <label>Mata Kuliah</label>
+                                                            <select name="id_matakuliah" class="form-control" required>
+                                                                <option value="">-- Pilih Mata Kuliah --</option>
+                                                                <option value="12">Pemrograman Web</option>
+                                                                <option value="14">Basis Data</option>
+                                                                <option value="18">Algoritma dan Struktur Data</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Prodi</label>
+                                                            <input type="text" name="cpl_prodi" class="form-control mb-3" placeholder="Masukkan Prodi" required>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                                                                Tambah
+                                                            </button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Edit -->
+                            <div class="modal fade" id="modalEdit" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+
+                                        <form id="formEdit" action="<?= base_url('capaian-lulusan/updateData') ?>" method="post">
 
                                             <div class="card-header pb-0 text-left">
                                                 <h3 class="font-weight-bolder text-primary text-gradient">
-                                                    Tambah Capaian Lulusan
+                                                    Edit Capaian Lulusan
                                                 </h3>
                                             </div>
 
-                                            <div class="card-body pb-3">
-                                                <form action="<?= base_url('capaian-lulusan/newData') ?>" method="post">
+                                            <div class="modal-body">
 
-                                                    <!-- Hardcode Penyusun -->
-                                                    <div class="mb-2">
-                                                        <label>Penyusun</label>
-                                                        <select name="id_penyusun" class="form-control" required>
-                                                            <option value="">-- Pilih Penyusun --</option>
-                                                            <option value="1">Adam Kopikap</option>
-                                                            <option value="2">Dadang Batagor</option>
-                                                            <option value="3">Asep Retail</option>
-                                                            <option value="4">Tedi Pasar</option>
-                                                            <option value="5">Wawan Kuncen Cikuray</option>
-                                                        </select>
-                                                    </div>
-                                                    <!-- Hardcode Mata Kuliah -->
-                                                    <div class="mb-2">
-                                                        <label>Mata Kuliah</label>
-                                                        <select name="id_matakuliah" class="form-control" required>
-                                                            <option value="">-- Pilih Mata Kuliah --</option>
-                                                            <option value="12">Pemrograman Web</option>
-                                                            <option value="14">Basis Data</option>
-                                                            <option value="18">Algoritma dan Struktur Data</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label>Prodi</label>
-                                                        <input type="text" name="cpl_prodi" class="form-control mb-3" placeholder="Masukkan Prodi" required>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
-                                                            Tambah
-                                                        </button>
-                                                    </div>
+                                                <input type="hidden" name="id" id="edit_id">
 
-                                                </form>
+                                                <!-- Hardcode Penyusun -->
+                                                <div class="mb-2">
+                                                    <label>Penyusun</label>
+                                                    <select name="id_penyusun" id="edit_id_penyusun" class="form-control">
+                                                        <option value="1">Adam Kopikap</option>
+                                                        <option value="2">Dadang Batagor</option>
+                                                        <option value="3">Asep Retail</option>
+                                                        <option value="4">Tedi Pasar</option>
+                                                        <option value="5">Wawan Kuncen Cikuray</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Hardcode Mata Kuliah -->
+                                                <div class="mb-2">
+                                                    <label>Mata Kuliah</label>
+                                                    <select name="id_matakuliah" id="edit_id_matakuliah" class="form-control">
+                                                        <option value="12">Pemrograman Web</option>
+                                                        <option value="14">Basis Data</option>
+                                                        <option value="18">Algoritma dan Struktur Data</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>Prodi</label>
+                                                    <input type="text" name="cpl_prodi" id="edit_cpl_prodi" class="form-control">
+                                                </div>
                                             </div>
 
-                                        </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            </div>
+
+                                        </form>
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Modal Edit -->
-                        <div class="modal fade" id="modalEdit" tabindex="-1">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-
-                                    <form id="formEdit" action="<?= base_url('capaian-lulusan/updateData') ?>" method="post">
-
-                                        <div class="card-header pb-0 text-left">
-                                            <h3 class="font-weight-bolder text-primary text-gradient">
-                                                Edit Capaian Lulusan
-                                            </h3>
-                                        </div>
-
-                                        <div class="modal-body">
-
-                                            <input type="hidden" name="id" id="edit_id">
-
-                                            <!-- Hardcode Penyusun -->
-                                            <div class="mb-2">
-                                                <label>Penyusun</label>
-                                                <select name="id_penyusun" id="edit_id_penyusun" class="form-control">
-                                                    <option value="1">Adam Kopikap</option>
-                                                    <option value="2">Dadang Batagor</option>
-                                                    <option value="3">Asep Retail</option>
-                                                    <option value="4">Tedi Pasar</option>
-                                                    <option value="5">Wawan Kuncen Cikuray</option>
-                                                </select>
-                                            </div>
-                                            <!-- Hardcode Mata Kuliah -->
-                                            <div class="mb-2">
-                                                <label>Mata Kuliah</label>
-                                                <select name="id_matakuliah" id="edit_id_matakuliah" class="form-control">
-                                                    <option value="12">Pemrograman Web</option>
-                                                    <option value="14">Basis Data</option>
-                                                    <option value="18">Algoritma dan Struktur Data</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label>Prodi</label>
-                                                <input type="text" name="cpl_prodi" id="edit_cpl_prodi" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                        </div>
-
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
+                        <?php endif ?>
 
                     </div>
                 </div>
@@ -217,6 +221,7 @@
         <script>
             const flashSuccess = "<?= $success ?>";
             const flashError = "<?= $error ?>";
+            const USER_ROLE = "<?= session('role') ?>";
 
             // Hapus Data
             function deleteData() {
@@ -321,14 +326,18 @@
                         },
                         {
                             data: null,
+                            orderable: false,
                             render: function(data, type, row) {
-                                return `
-                            <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
-                            Edit
-                            </button>
-                            <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
-                            Hapus
-                            </button>`;
+                                if (USER_ROLE === 'admin' || USER_ROLE === 'manajer') {
+                                    return `
+                                <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
+                                Edit
+                                </button>
+                                <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
+                                Hapus
+                                </button>`;
+                                }
+                                return '-';
                             }
                         }
                     ]

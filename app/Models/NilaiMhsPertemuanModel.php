@@ -22,7 +22,7 @@ class NilaiMhsPertemuanModel extends Model
     ];
 
     // Dates
-    protected $useTimestamps = true; // aktifkan jika tabel punya created_at & updated_at
+    protected $useTimestamps = false; // aktifkan jika tabel punya created_at & updated_at
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

@@ -49,6 +49,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function createData()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
 
         $data = [
@@ -72,6 +75,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function updateById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('nilai-pertemuan-mahasiswa')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $model = new NilaiMhsPertemuanModel();
 
         $id = $this->request->getPost('id');
@@ -156,7 +162,7 @@ class NilaiMhsPertemuan extends BaseController
 
     public function exportExcel()
     {
-        $model = new \App\Models\NilaiMhsPertemuanModel();
+        $model = new NilaiMhsPertemuanModel();
         $data = $model->findAll();
 
         $spreadsheet = new Spreadsheet();
