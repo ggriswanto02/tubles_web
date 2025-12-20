@@ -10,12 +10,11 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-
-class Rpl extends BaseController
+class RencanaPembelajaran extends BaseController
 {
     public function index()
     {
-        return view('rpembelajaran');
+        return view('rencana_pembelajaran');
     }
 
     public function getData()
@@ -50,9 +49,9 @@ class Rpl extends BaseController
         ]);
     }
 
-    public function newData()
+    public function createData()
     {
-        $rplModel = new RencanaPembelajaranModel();
+        $model = new RencanaPembelajaranModel();
 
         $data = [
             'id_penyusun' => $this->request->getPost('id_penyusun'),
@@ -71,16 +70,16 @@ class Rpl extends BaseController
             return redirect()->back()->with('error', 'Data wajib belum lengkap.');
         }
 
-        if ($rplModel->insert($data)) {
-            return redirect()->to('/rpl')->with('success', 'Data berhasil ditambahkan.');
+        if ($model->insert($data)) {
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil ditambahkan.');
         } else {
-            return redirect()->to('/rpl')->with('error', 'Gagal menambahkan data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal menambahkan data.');
         }
     }
 
-    public function updateData()
+    public function updateById()
     {
-        $rplModel = new RencanaPembelajaranModel();
+        $model = new RencanaPembelajaranModel();
 
         $id = $this->request->getPost('id');
         if (!$id) {
@@ -100,13 +99,12 @@ class Rpl extends BaseController
             'catatan' => $this->request->getPost('catatan'),
         ];
 
-        if ($rplModel->update($id, $data)) {
-            return redirect()->to('/rpl')->with('success', 'Data berhasil diperbarui.');
+        if ($model->update($id, $data)) {
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil diperbarui.');
         } else {
-            return redirect()->to('/rpl')->with('error', 'Gagal memperbarui data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal memperbarui data.');
         }
     }
-
 
     public function getById()
     {
@@ -166,127 +164,125 @@ class Rpl extends BaseController
             'status' => false,
             'message' => 'Gagal menghapus data.'
         ]);
-
     }
+
     public function exportExcel()
     {
-    $model = new RencanaPembelajaranModel();
-    $data = $model->findAll();
+        $model = new RencanaPembelajaranModel();
+        $data = $model->findAll();
 
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-    $sheet->setCellValue('A1', 'RENCANA PEMBELAJARAN');
-    $sheet->mergeCells('A1:K1');
+        $sheet->setCellValue('A1', 'RENCANA PEMBELAJARAN');
+        $sheet->mergeCells('A1:K1');
 
-    $sheet->getStyle('A1')->applyFromArray([
-        'font' => [
-            'bold' => true,
-            'size' => 16,
-        ],
-        'alignment' => [
-            'horizontal' => Alignment::HORIZONTAL_CENTER,
-            'vertical'   => Alignment::VERTICAL_CENTER,
-        ],
-    ]);
-
-    $sheet->setCellValue('A2', 'Program Studi Teknik Informatika');
-    $sheet->mergeCells('A2:K2');
-
-    $sheet->getStyle('A2')->applyFromArray([
-        'font' => [
-            'italic' => true,
-            'size' => 11,
-        ],
-        'alignment' => [
-            'horizontal' => Alignment::HORIZONTAL_CENTER,
-        ],
-    ]);
-
-
-    // Header kolom
-    $sheet->setCellValue('A4', 'ID');
-    $sheet->setCellValue('B4', 'ID Penyusun');
-    $sheet->setCellValue('C4', 'ID Mata Kuliah');
-    $sheet->setCellValue('D4', 'Minggu Ke');
-    $sheet->setCellValue('E4', 'Sub CPMK');
-    $sheet->setCellValue('F4', 'Indikator');
-    $sheet->setCellValue('G4', 'Teknik');
-    $sheet->setCellValue('H4', 'Bentuk Pembelajaran');
-    $sheet->setCellValue('I4', 'Materi');
-    $sheet->setCellValue('J4', 'Bobot');
-    $sheet->setCellValue('K4', 'Catatan');
-
-    $headerStyle = [
-    'font' => [
-        'bold' => true,
-    ],
-    'alignment' => [
-        'horizontal' => Alignment::HORIZONTAL_CENTER,
-        'vertical' => Alignment::VERTICAL_CENTER,
-    ],
-    'fill' => [
-        'fillType' => Fill::FILL_SOLID,
-        'startColor' => [
-            'rgb' => 'D9E1F2', // warna biru muda (aman & akademik)
-        ],
-    ],
-    ];
-
-    // Terapkan ke header (A1 sampai D1)
-    $sheet->getStyle('A4:K4')->applyFromArray($headerStyle);
-
-
-    // Isi data
-    $row = 5;
-    foreach ($data as $item) {
-        $sheet->setCellValue('A'.$row, $item['id']);
-        $sheet->setCellValue('B'.$row, $item['id_penyusun']);
-        $sheet->setCellValue('C'.$row, $item['id_matakuliah']);
-        $sheet->setCellValue('D'.$row, $item['minggu_ke']);
-        $sheet->setCellValue('E'.$row, $item['sub_cpmk']);
-        $sheet->setCellValue('F'.$row, $item['penilaian_indikator']);
-        $sheet->setCellValue('G'.$row, $item['penilaian_teknik']);
-        $sheet->setCellValue('H'.$row, $item['bentuk_pembelajaran']);
-        $sheet->setCellValue('I'.$row, $item['materi']);
-        $sheet->setCellValue('J'.$row, $item['bobot_penilaian']);
-        $sheet->setCellValue('K'.$row, $item['catatan']);
-        $row++;
-    }
-
-    foreach (range('A', 'K') as $columnID) {
-    $sheet->getColumnDimension($columnID)->setAutoSize(true);
-    }
-
-    $lastRow = $row - 1;
-
-    $sheet->getStyle("A4:K{$lastRow}")->applyFromArray([
-        'borders' => [
-            'allBorders' => [
-                'borderStyle' => Border::BORDER_THIN,
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 16,
             ],
-        ],
-    ]);
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical'   => Alignment::VERTICAL_CENTER,
+            ],
+        ]);
 
-    $sheet->getStyle("A2:K{$lastRow}")
-      ->getAlignment()
-      ->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->setCellValue('A2', 'Program Studi Teknik Informatika');
+        $sheet->mergeCells('A2:K2');
 
-    $sheet->getStyle("K2:K{$lastRow}")
-      ->getAlignment()
-      ->setWrapText(true);
+        $sheet->getStyle('A2')->applyFromArray([
+            'font' => [
+                'italic' => true,
+                'size' => 11,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+            ],
+        ]);
 
 
-    $filename = 'Rencana Pembelajaran.xlsx';
+        // Header kolom
+        $sheet->setCellValue('A4', 'ID');
+        $sheet->setCellValue('B4', 'ID Penyusun');
+        $sheet->setCellValue('C4', 'ID Mata Kuliah');
+        $sheet->setCellValue('D4', 'Minggu Ke');
+        $sheet->setCellValue('E4', 'Sub CPMK');
+        $sheet->setCellValue('F4', 'Indikator');
+        $sheet->setCellValue('G4', 'Teknik');
+        $sheet->setCellValue('H4', 'Bentuk Pembelajaran');
+        $sheet->setCellValue('I4', 'Materi');
+        $sheet->setCellValue('J4', 'Bobot');
+        $sheet->setCellValue('K4', 'Catatan');
 
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header("Content-Disposition: attachment; filename=\"$filename\"");
-    header('Cache-Control: max-age=0');
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'D9E1F2', // warna biru muda (aman & akademik)
+                ],
+            ],
+        ];
 
-    $writer = new Xlsx($spreadsheet);
-    $writer->save('php://output');
-    exit;
+        // Terapkan ke header (A1 sampai D1)
+        $sheet->getStyle('A4:K4')->applyFromArray($headerStyle);
+
+
+        // Isi data
+        $row = 5;
+        foreach ($data as $item) {
+            $sheet->setCellValue('A' . $row, $item['id']);
+            $sheet->setCellValue('B' . $row, $item['id_penyusun']);
+            $sheet->setCellValue('C' . $row, $item['id_matakuliah']);
+            $sheet->setCellValue('D' . $row, $item['minggu_ke']);
+            $sheet->setCellValue('E' . $row, $item['sub_cpmk']);
+            $sheet->setCellValue('F' . $row, $item['penilaian_indikator']);
+            $sheet->setCellValue('G' . $row, $item['penilaian_teknik']);
+            $sheet->setCellValue('H' . $row, $item['bentuk_pembelajaran']);
+            $sheet->setCellValue('I' . $row, $item['materi']);
+            $sheet->setCellValue('J' . $row, $item['bobot_penilaian']);
+            $sheet->setCellValue('K' . $row, $item['catatan']);
+            $row++;
+        }
+
+        foreach (range('A', 'K') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $lastRow = $row - 1;
+
+        $sheet->getStyle("A4:K{$lastRow}")->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                ],
+            ],
+        ]);
+
+        $sheet->getStyle("A2:K{$lastRow}")
+            ->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $sheet->getStyle("K2:K{$lastRow}")
+            ->getAlignment()
+            ->setWrapText(true);
+
+
+        $filename = 'Rencana Pembelajaran.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
     }
-
-
 }
