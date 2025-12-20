@@ -11,19 +11,10 @@
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a>
                     </li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Korelasi Capaian Pembelajaran</li>
                 </ol>
-                <h3 class="font-weight-bolder text-white mb-0">Tables</h3>
+                <!-- <h3 class="font-weight-bolder text-white mb-0">Tables</h3> -->
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                    <!-- <div class="input-group">
-                        <form action="<?= base_url('/cari') ?>" method="GET" id="searchForm">
-                            <span class="input-group-text text-body"><input type="search" id="searchInput" name="search" placeholder="Cari berdasarkan keterangan.." /><i class="fas fa-search" aria-hidden="true"></i></span>
-                        </form>
-                    </div> -->
-                </div>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -34,296 +25,441 @@
                     <div class="card-header pb-0">
                         <h5>Korelasi Capaian Pembelajaran</h5>
                         <h6>Daftar Pencapaian</h6>
-
+                        <!-- button tambah -->
                         <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
-                            <!-- button tambah -->
                             <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal"
-                                data-bs-target="#modalCreate">
-                                Tambah Data
-                            </button>
+                                data-bs-target="#modalCreate">Tambah Data</button>
                         <?php endif ?>
-
-                        <a href="<?= base_url('korelasi-cpl-cpmk/export') ?>" class="btn btn-success mb-3">Export
-                            Excel</a>
+                        <a href="<?= site_url('korelasi-cpl-cpmk/export') ?>" class="btn btn-success mb-3">Export Excel</a>
                         <br>
                     </div>
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive px-2">
-                            <table class="table table-hover align-items-center mb-0">
+
+                    <div class="card-body pb-2">
+                        <div class="table-responsive">
+                            <table id="tableCPLCPMK" class="table table-striped nowrap" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder px-2">
-                                            No</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Penyusun</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Matakuliah</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Capaian Pembelajaran
-                                        </th>
-                                        <th class="text-uppercase text-xs font-weight-bolder px-2">Sub Capaian
-                                            Pembelajaran</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">
-                                            Persentase (%)</th>
-                                        <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Bobot
-                                            Penilaian</th>
-                                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
-                                            <th class="text-center text-uppercase text-xs font-weight-bolder px-2">Aksi</th>
-                                        <?php endif ?>
+                                        <th>ID</th>
+                                        <th>Penyusun</th>
+                                        <th>Matakuliah</th>
+                                        <th>Capaian Pembelajaran</th>
+                                        <th>Sub Capaian Pembelajaran</th>
+                                        <th>Persentase (%)</th>
+                                        <th>Bobot Penilaian</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <?php if (empty($items)): ?>
-                                        <tr>
-                                            <td colspan="8" class="text-center text-muted py-4">
-                                                Data tidak ditemukan
-                                            </td>
-                                        </tr>
-                                    <?php else: ?>
-                                        <?php $no = 1;
-                                        foreach ($items as $row): ?>
-                                            <tr>
-                                                <td class="text-center"><?= $no ?></td>
-                                                <td class="px-2 text-sm"><?= $row['id_penyusun'] ?></td>
-                                                <td class="px-2 text-sm"><?= $row['id_matakuliah'] ?></td>
-                                                <td class="px-2 w-25">
-                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;"
-                                                        disabled><?= $row['cpmk'] ?></textarea>
-                                                </td>
-                                                <td class="px-2 w-25">
-                                                    <textarea class="form-control bg-white" rows="3" style="resize: none;"
-                                                        disabled><?= $row['sub_cpmk'] ?></textarea>
-                                                </td>
-                                                <td class="px-2 text-center"><?= $row['persentase'] ?></td>
-                                                <td class="px-2 text-center"><?= $row['bobot_penilaian'] ?></td>
-                                                <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
-                                                    <td class="text-center">
-                                                        <a href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/edit') ?>"
-                                                            class="btn bg-gradient-info btn-block">
-                                                            Edit
-                                                        </a>
-
-                                                        <a href="#"
-                                                            data-href="<?= base_url('korelasi-cpl-cpmk/' . $row['id'] . '/delete') ?>"
-                                                            onclick="confirmToDelete(this)" class="btn bg-gradient-danger btn-block"
-                                                            data-bs-toggle="modal" data-bs-target="#confirm-dialog">
-                                                            Hapus
-                                                        </a>
-                                                    </td>
-                                                <?php endif ?>
-                                            </tr>
-                                            <?php $no++;
-                                        endforeach; ?>
-                                    <?php endif; ?>
-                                </tbody>
                             </table>
+                        </div>
 
-                            <!-- js message data tidak ditemukan  -->
-                            <div id="resultMessage" class="result-message text-center"></div>
+                        <p id="resultMessage" class="text-danger text-center mt-3"></p>
 
-                            <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
-                                <!-- modal delete -->
-                                <div class="modal fade" id="confirm-dialog" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus data ini?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Batal</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    onclick="deleteData()">Hapus</button>
+                        <?php if (in_array(session('role'), ['admin', 'manajer'])): ?>
+                            <!-- Modal Delete -->
+                            <div class="modal fade" id="modalDelete" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus data ini?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteData()">Hapus</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Create -->
+                            <div class="modal fade" id="modalCreate" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card card-plain">
+
+                                                <div class="card-header pb-0 text-left">
+                                                    <h3 class="font-weight-bolder text-primary text-gradient">
+                                                        Tambah Korelasi CPL-CPMK
+                                                    </h3>
+                                                </div>
+
+                                                <div class="card-body pb-3">
+                                                    <form action="<?= base_url('korelasi-cpl-cpmk/newData') ?>" method="post">
+
+                                                        <!-- Hardcode Penyusun -->
+                                                        <div class="mb-2">
+                                                            <label>Penyusun</label>
+                                                            <select name="id_penyusun" class="form-control" required>
+                                                                <option value="">-- Pilih Penyusun --</option>
+                                                                <option value="1">Adam Kopikap</option>
+                                                                <option value="2">Dadang Batagor</option>
+                                                                <option value="3">Asep Retail</option>
+                                                                <option value="4">Tedi Pasar</option>
+                                                                <option value="5">Wawan Kuncen Cikuray</option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- Hardcode Mata Kuliah -->
+                                                        <div class="mb-2">
+                                                            <label>Mata Kuliah</label>
+                                                            <select name="id_matakuliah" class="form-control" required>
+                                                                <option value="">-- Pilih Mata Kuliah --</option>
+                                                                <option value="12">Pemrograman Web</option>
+                                                                <option value="14">Basis Data</option>
+                                                                <option value="18">Algoritma dan Struktur Data</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>CPMK</label>
+                                                            <textarea name="cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
+                                                            <small class="text-muted text-xs float-end">
+                                                                <span id="cpmkCount">0</span>/255
+                                                            </small>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Sub CPMK</label>
+                                                            <textarea name="sub_cpmk" class="form-control" rows="3" maxlength="255" oninput="updateCount('sub_cpmk', 'subCount')" placeholder="Masukkan Sub CPMK"></textarea>
+                                                            <small class="text-muted text-xs float-end">
+                                                                <span id="subCount">0</span>/255
+                                                            </small>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Persentase (%)</label>
+                                                            <input type="number" name="persentase" class="form-control" placeholder="Masukkan Persentase (0–100)" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Bobot Penilaian</label>
+                                                            <input type="number" name="bobot_penilaian" class="form-control" placeholder="Masukkan Bobot (0–100)" min="0" max="100" required>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                                                                Tambah
+                                                            </button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- js delete -->
-                                <script>
-                                    function confirmToDelete(element) {
-                                        var deleteButton = document.getElementById('confirm-dialog').querySelector('.btn-danger');
-                                        deleteButton.setAttribute('data-href', element.getAttribute('data-href'));
-                                    }
+                            <!-- Modal Edit -->
+                            <div class="modal fade" id="modalEdit" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
 
-                                    function deleteData() {
-                                        var deleteUrl = document.getElementById('confirm-dialog').querySelector('.btn-danger').getAttribute('data-href');
+                                        <form id="formEdit" action="<?= base_url('korelasi-cpl-cpmk/updateData') ?>" method="post">
 
-                                        window.location.href = deleteUrl;
-                                    }
-                                </script>
+                                            <div class="card-header pb-0 text-left">
+                                                <h3 class="font-weight-bolder text-primary text-gradient">
+                                                    Edit Korelasi CPL-CPMK
+                                                </h3>
+                                            </div>
 
-                                <!-- modal tambah data -->
-                                <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-body p-0">
-                                                <div class="card card-plain">
+                                            <div class="modal-body">
 
-                                                    <div class="card-header pb-0 text-left">
-                                                        <h3 class="font-weight-bolder text-primary text-gradient">Tambah
-                                                            Korelasi CPL–CPMK</h3>
-                                                        <p class="mb-0">Masukkan data CPL–CPMK</p>
-                                                    </div>
+                                                <input type="hidden" name="id" id="edit_id">
 
-                                                    <div class="card-body pb-3">
-                                                        <form action="<?= base_url('korelasi-cpl-cpmk/new') ?>"
-                                                            method="post" role="form text-left">
-
-                                                            <label>Penyusun</label>
-                                                            <div class="input-group mb-3">
-                                                                <!-- <select name="id_penyusun" id="id_penyusun" class="form-control" required>
-                                                                <option value="">-- Pilih Penyusun --</option>
-                                                                <option value="DSN01">Mamank Irfa</option>
-                                                                <option value="DSN02">Mamank Agung</option>
-                                                                <option value="DSN03">Mamank Adit</option>
-                                                                <option value="DSN04">Mamank Deska</option>
-                                                            </select> -->
-                                                                <input type="text" class="form-control" name="id_penyusun"
-                                                                    placeholder="Masukkan Penyusun" required>
-                                                            </div>
-
-                                                            <label>Matakuliah</label>
-                                                            <div class="input-group mb-3">
-                                                                <input type="text" class="form-control" name="id_matakuliah"
-                                                                    placeholder="Masukkan Matakuliah" required>
-                                                                <!-- <select name="id_matakuliah" id="id_matakuliah" class="form-control" required>
-                                                                <option value="">-- Pilih Matakuliah --</option>
-                                                                <option value="MK001">Pemrograman Web</option>
-                                                                <option value="MK002">Basis Data</option>
-                                                                <option value="MK003">Algoritma dan Struktur Data</option>
-                                                            </select> -->
-                                                            </div>
-
-                                                            <!-- ================= CPMK ================= -->
-                                                            <label>CPMK</label>
-                                                            <div class="mb-3">
-                                                                <textarea class="form-control bg-white text-dark"
-                                                                    name="cpmk" rows="3" maxlength="255"
-                                                                    oninput="updateCount('cpmk', 'cpmkCount')"
-                                                                    placeholder="Masukkan CPMK" required></textarea>
-                                                                <small class="text-muted text-xs float-end">
-                                                                    <span id="cpmkCount">0</span>/255
-                                                                </small>
-                                                            </div>
-
-                                                            <!-- ================= Sub CPMK ================= -->
-                                                            <label>Sub CPMK</label>
-                                                            <div class="mb-3">
-                                                                <textarea class="form-control bg-white text-dark"
-                                                                    name="sub_cpmk" rows="3" maxlength="255"
-                                                                    oninput="updateCount('sub_cpmk', 'subCount')"
-                                                                    placeholder="Masukkan Sub CPMK" required></textarea>
-                                                                <small class="text-muted text-xs float-end">
-                                                                    <span id="subCount">0</span>/255
-                                                                </small>
-                                                            </div>
-
-                                                            <label>Persentase (%)</label>
-                                                            <div class="input-group mb-3">
-                                                                <input type="number" class="form-control" name="persentase"
-                                                                    placeholder="Persentase (0–100)" min="0" max="100"
-                                                                    required>
-                                                            </div>
-
-                                                            <label>Bobot Penilaian</label>
-                                                            <div class="input-group mb-3">
-                                                                <input type="number" class="form-control"
-                                                                    name="bobot_penilaian" placeholder="Bobot Penilaian"
-                                                                    min="0" max="100" required>
-                                                            </div>
-
-                                                            <div class="text-center">
-                                                                <button type="submit"
-                                                                    class="btn bg-gradient-primary btn-lg btn-rounded w-100 mt-4 mb-0">
-                                                                    Tambah
-                                                                </button>
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-
+                                                <!-- Hardcode Penyusun -->
+                                                <div class="mb-2">
+                                                    <label>Penyusun</label>
+                                                    <select name="id_penyusun" id="edit_id_penyusun" class="form-control">
+                                                        <option value="1">Adam Kopikap</option>
+                                                        <option value="2">Dadang Batagor</option>
+                                                        <option value="3">Asep Retail</option>
+                                                        <option value="4">Tedi Pasar</option>
+                                                        <option value="5">Wawan Kuncen Cikuray</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Hardcode Mata Kuliah -->
+                                                <div class="mb-2">
+                                                    <label>Mata Kuliah</label>
+                                                    <select name="id_matakuliah" id="edit_id_matakuliah" class="form-control">
+                                                        <option value="12">Pemrograman Web</option>
+                                                        <option value="14">Basis Data</option>
+                                                        <option value="18">Algoritma dan Struktur Data</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>CPMK</label>
+                                                    <textarea class="form-control" id="edit_cpmk" name="cpmk" rows="3" maxlength="255" oninput="updateCount('cpmk', 'cpmkCount')" placeholder="Masukkan CPMK"></textarea>
+                                                    <small class="text-muted text-xs float-end">
+                                                        <span id="cpmkCount">0</span>/255
+                                                    </small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>Sub CPMK</label>
+                                                    <textarea class="form-control" id="edit_sub_cpmk" name="sub_cpmk" rows="3" maxlength="255" oninput="updateCount('subcpmk', 'subcpmkCount')" placeholder="Masukkan Sub CPMK"></textarea>
+                                                    <small class="text-muted text-xs float-end">
+                                                        <span id="subcpmkCount">0</span>/255
+                                                    </small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>Persentase (%)</label>
+                                                    <input type="number" class="form-control" id="edit_persentase" name="persentase" min="0" max="100">
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>Bobot Penilaian</label>
+                                                    <input type="number" class="form-control" id="edit_bobot_penilaian" name="bobot_penilaian" min="0" max="100">
                                                 </div>
                                             </div>
-                                        </div>
+
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            </div>
+
+                                        </form>
                                     </div>
+
                                 </div>
-                            <?php endif ?>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Jika Data Tidak Ditemukan -->
+            <div class="modal fade" id="modalNotFound" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-danger">
+                            <h5 class="modal-title text-white">Data Tidak Ditemukan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
+
+                        <div class="modal-body text-center">
+                            <p id="notFoundMessage" class="mb-0">Data tidak tersedia.</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Tutup
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
 
+        <body class="bg-primary">
+            <?php
+            $success = session()->getFlashdata('success');
+            $error = session()->getFlashdata('error');
+            ?>
 
+            <script>
+                const flashSuccess = "<?= $success ?>";
+                const flashError = "<?= $error ?>";
+                const USER_ROLE = "<?= session('role') ?>";
 
+                // Hitung Jumlah Karakter
+                function updateCount(fieldName, counterId) {
+                    const field = document.getElementsByName(fieldName)[0];
+                    const counter = document.getElementById(counterId);
+                    counter.textContent = field.value.length;
+                }
 
-<body class="g-sidenav-show bg-primary">
-    <!-- js search -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchForm = document.getElementById("searchForm");
-            const searchInput = document.getElementById("searchInput");
-            const resultMessage = document.getElementById("resultMessage");
-            const tableBody = document.querySelector(".table tbody");
-
-            function filterRows() {
-                const searchText = searchInput.value.toLowerCase();
-                let foundRows = 0;
-
-                tableBody.querySelectorAll("tr").forEach(function (row, index) {
-                    const cells = row.querySelectorAll("td");
-                    const kategoriText = cells[3].textContent.toLowerCase();
-
-                    if (kategoriText.includes(searchText)) {
-                        row.style.display = "";
-                        foundRows++;
-                    } else {
-                        row.style.display = "none";
-                    }
+                document.addEventListener("DOMContentLoaded", function() {
+                    updateCount('cpmk', 'cpmkCount');
+                    updateCount('subcpmk', 'subcpmkCount');
                 });
 
-                if (foundRows === 0) {
-                    resultMessage.textContent = "Data tidak ditemukan";
-                } else {
-                    resultMessage.textContent = "";
+                // Hapus Data
+                function deleteData() {
+                    if (!window.deleteId) return;
+                    $.ajax({
+                        url: "/korelasi-cpl-cpmk/deleteById",
+                        method: "POST",
+                        data: {
+                            id: window.deleteId
+                        },
+                        success: function(res) {
+                            $('#modalDelete').modal('hide');
+                            if (res.status === true) {
+                                Swal.fire({
+                                    title: "Berhasil",
+                                    text: res.message,
+                                    icon: "success",
+                                    timer: 2000
+                                });
+                                $('#tableCPLCPMK').DataTable().ajax.reload(null, false);
+                            } else {
+                                Swal.fire({
+                                    title: "Gagal",
+                                    text: res.message,
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function() {
+                            let msg = "Terjadi kesalahan pada server.";
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                msg = xhr.responseJSON.message;
+                            }
+                            Swal.fire({
+                                title: "Gagal",
+                                text: res.message,
+                                icon: "error"
+                            });
+                        }
+                    });
                 }
-            }
 
-            searchForm.addEventListener("submit", function (event) {
-                event.preventDefault();
-                filterRows();
-            });
+                $(document).ready(function() {
+                    const penyusunList = {
+                        1: "Adam Kopikap",
+                        2: "Dadang Batagor",
+                        3: "Asep Retail",
+                        4: "Tedi Pasar",
+                        5: "Wawan Kuncen Cikuray",
+                    }
 
-            searchInput.addEventListener("input", filterRows);
+                    const matkulList = {
+                        12: "Pemrograman Web",
+                        14: "Basis Data",
+                        18: "Algoritma dan Struktur Data",
+                    }
 
-            filterRows();
-        });
+                    if (flashSuccess) {
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: flashSuccess,
+                            icon: "success",
+                            timer: 2000
+                        });
+                    }
 
-        document.getElementById('modalCreate').addEventListener('shown.bs.modal', function () {
-            const form = this.querySelector('form');
-            if (form) {
-                form.reset();
+                    if (flashError) {
+                        Swal.fire({
+                            title: "Gagal",
+                            text: flashError,
+                            icon: "error"
+                        });
+                    }
 
-                document.getElementById('cpmkCount').textContent = '0';
-                document.getElementById('subCount').textContent = '0';
-            }
-        });
+                    // Inisialisasi DataTable
+                    let table = $('#tableCPLCPMK').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        scrollX: true,
+                        ajax: {
+                            url: "<?= base_url('korelasi-cpl-cpmk/getData') ?>",
+                            type: "POST"
+                        },
+                        columns: [{
+                                data: "id"
+                            },
+                            {
+                                data: "id_penyusun",
+                                render: function(val) {
+                                    return penyusunList[val] ?? "Tidak diketahui";
+                                }
+                            },
+                            {
+                                data: "id_matakuliah",
+                                render: function(val) {
+                                    return matkulList[val] ?? "Tidak diketahui";
+                                }
+                            },
 
-        function updateCount(fieldName, counterId) {
-            const field = document.getElementsByName(fieldName)[0];
-            const counter = document.getElementById(counterId);
-            counter.textContent = field.value.length;
-        }
-    </script>
+                            {
+                                data: "cpmk"
+                            },
+                            {
+                                data: "sub_cpmk"
+                            },
+                            {
+                                data: "persentase"
+                            },
+                            {
+                                data: "bobot_penilaian"
+                            },
+                            {
+                                data: null,
+                                orderable: false,
+                                render: function(data, type, row) {
+                                    if (USER_ROLE === 'admin' || USER_ROLE === 'manajer') {
+                                        return `
+                                <button class="btn bg-gradient-info btn-sm mb-0 btnEdit" data-id="${row.id}">
+                                Edit
+                                </button>
+                                <button class="btn bg-gradient-danger btn-sm mb-0 btnDelete" data-id="${row.id}">
+                                Hapus
+                                </button>`;
+                                    }
+                                    return '-';
+                                }
+                            }
+                        ]
+                    });
+                    document.querySelectorAll('.dt-button').forEach(btn => {
+                        btn.classList.remove('dt-button');
+                    });
 
-</body>
+                    // Hapus Data
+                    $('#tableCPLCPMK').on('click', '.btnDelete', function() {
+                        window.deleteId = $(this).data('id');
+                        $('#modalDelete').modal('show');
+                    });
+
+                    // Edit Data
+                    $('#tableCPLCPMK').on('click', '.btnEdit', function() {
+                        let id = $(this).data('id');
+
+                        $.ajax({
+                            url: "/korelasi-cpl-cpmk/getById",
+                            data: {
+                                id: id
+                            },
+                            method: "GET",
+                            success: function(res) {
+                                if (res.status === true) {
+                                    let d = res.data;
+
+                                    $('#edit_id').val(d.id);
+                                    $('#edit_id_penyusun').val(d.id_penyusun);
+                                    $('#edit_id_matakuliah').val(d.id_matakuliah);
+                                    $('#edit_cpmk').val(d.cpmk);
+                                    $('#edit_sub_cpmk').val(d.sub_cpmk);
+                                    $('#edit_persentase').val(d.persentase);
+                                    $('#edit_bobot_penilaian').val(d.bobot_penilaian);
+
+                                    $('#modalEdit').modal('show');
+                                } else {
+                                    Swal.fire({
+                                        title: "Gagal",
+                                        text: res.message || "Data tidak ditemukan.",
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                let msg = "Terjadi kesalahan saat mengambil data.";
+                                if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    msg = xhr.responseJSON.message;
+                                }
+                                Swal.fire({
+                                    title: "Gagal",
+                                    text: msg,
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    });
+                });
+            </script>
+
+        </body>
+</main>
 
 <style>
     #modalCreate {

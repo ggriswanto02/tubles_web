@@ -10,13 +10,11 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-
-class Rpl extends BaseController
+class RencanaPembelajaran extends BaseController
 {
     public function index()
     {
-        // dd(session('role'));
-        return view('rpembelajaran');
+        return view('rencana_pembelajaran');
     }
 
     public function getData()
@@ -51,12 +49,12 @@ class Rpl extends BaseController
         ]);
     }
 
-    public function newData()
+    public function createData()
     {
         if (!in_array(session('role'), ['admin', 'manajer'])) {
-            return redirect()->to('/rpl')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
         }
-        $rplModel = new RencanaPembelajaranModel();
+        $model = new RencanaPembelajaranModel();
 
         $data = [
             'id_penyusun' => $this->request->getPost('id_penyusun'),
@@ -75,19 +73,19 @@ class Rpl extends BaseController
             return redirect()->back()->with('error', 'Data wajib belum lengkap.');
         }
 
-        if ($rplModel->insert($data)) {
-            return redirect()->to('/rpl')->with('success', 'Data berhasil ditambahkan.');
+        if ($model->insert($data)) {
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil ditambahkan.');
         } else {
-            return redirect()->to('/rpl')->with('error', 'Gagal menambahkan data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal menambahkan data.');
         }
     }
 
-    public function updateData()
+    public function updateById()
     {
         if (!in_array(session('role'), ['admin', 'manajer'])) {
-            return redirect()->to('/rpl')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
         }
-        $rplModel = new RencanaPembelajaranModel();
+        $model = new RencanaPembelajaranModel();
 
         $id = $this->request->getPost('id');
         if (!$id) {
@@ -107,13 +105,12 @@ class Rpl extends BaseController
             'catatan' => $this->request->getPost('catatan'),
         ];
 
-        if ($rplModel->update($id, $data)) {
-            return redirect()->to('/rpl')->with('success', 'Data berhasil diperbarui.');
+        if ($model->update($id, $data)) {
+            return redirect()->to('/rencana-pembelajaran')->with('success', 'Data berhasil diperbarui.');
         } else {
-            return redirect()->to('/rpl')->with('error', 'Gagal memperbarui data.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Gagal memperbarui data.');
         }
     }
-
 
     public function getById()
     {
@@ -145,7 +142,7 @@ class Rpl extends BaseController
     public function deleteById()
     {
         if (!in_array(session('role'), ['admin', 'manajer'])) {
-            return redirect()->to('/rpl')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+            return redirect()->to('/rencana-pembelajaran')->with('error', 'Tidak memiliki akses untuk aksi ini.');
         }
         $id = $this->request->getPost('id');
 
@@ -176,8 +173,8 @@ class Rpl extends BaseController
             'status' => false,
             'message' => 'Gagal menghapus data.'
         ]);
-
     }
+
     public function exportExcel()
     {
         $model = new RencanaPembelajaranModel();
@@ -297,6 +294,4 @@ class Rpl extends BaseController
         $writer->save('php://output');
         exit;
     }
-
-
 }

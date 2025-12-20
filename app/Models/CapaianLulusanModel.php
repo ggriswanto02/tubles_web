@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CPLModel extends Model
+class CapaianLulusanModel extends Model
 {
-    protected $table            = 'cpl';
+    protected $table            = 'capaian_lulusan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -20,7 +20,7 @@ class CPLModel extends Model
     ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = true; 
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

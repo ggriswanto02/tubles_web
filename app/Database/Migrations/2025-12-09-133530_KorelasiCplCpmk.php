@@ -10,17 +10,20 @@ class KorelasiCplCpmk extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type' => 'INT',
-                'unsigned' => true,
+                'type'           => 'INT',
+                'constraint'     => 11,
                 'auto_increment' => true,
+                'unsigned'       => true,
             ],
             'id_penyusun' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type'       => 'INT',
+                'constraint' => 11,
+                'unsigned'   => true,
             ],
             'id_matakuliah' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type'       => 'INT',
+                'constraint' => 11,
+                'unsigned'   => true,
             ],
             'sub_cpmk' => [
                 'type' => 'VARCHAR',
@@ -35,6 +38,14 @@ class KorelasiCplCpmk extends Migration
             ],
             'bobot_penilaian' => [
                 'type' => 'FLOAT',
+            ],
+            'created_at' => [
+                'type'    => 'DATETIME',
+                'null'    => true,
+            ],
+            'updated_at' => [
+                'type'    => 'DATETIME',
+                'null'    => true,
             ],
         ]);
 

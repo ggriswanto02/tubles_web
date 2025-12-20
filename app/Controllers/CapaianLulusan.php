@@ -3,23 +3,23 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\NilaiMhsPertemuanModel;
+use App\Models\CapaianLulusanModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class NilaiMhsPertemuan extends BaseController
+class CapaianLulusan extends BaseController
 {
     public function index()
     {
-        return view('nilai_mhs_pertemuan');
+        return view('capaian_lulusan');
     }
 
     public function getData()
     {
-        $model = new NilaiMhsPertemuanModel();
+        $model = new CapaianLulusanModel();
 
         $draw = $this->request->getPost('draw');
         $start = $this->request->getPost('start');
@@ -31,7 +31,8 @@ class NilaiMhsPertemuan extends BaseController
 
         // Filtering
         if (!empty($searchValue)) {
-            $model->like('nim', $searchValue);
+            $model->like('id_penyusun', $searchValue)
+                ->orLike('id_matakuliah', $searchValue);
         }
 
         $totalFiltered = $model->countAllResults(false);
@@ -50,35 +51,33 @@ class NilaiMhsPertemuan extends BaseController
     public function createData()
     {
         if (!in_array(session('role'), ['admin', 'manajer'])) {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
         }
-        $model = new NilaiMhsPertemuanModel();
+        $model = new CapaianLulusanModel();
 
         $data = [
-            'nim' => $this->request->getPost('nim'),
-            'id_rencana_pembelajaran' => $this->request->getPost('id_rencana_pembelajaran'),
-            'nilai_kompetensi' => $this->request->getPost('nilai_kompetensi'),
-            'status' => $this->request->getPost('status'),
-            'keterangan' => $this->request->getPost('keterangan')
+            'id_penyusun'  => $this->request->getPost('id_penyusun'),
+            'id_matakuliah' => $this->request->getPost('id_matakuliah'),
+            'cpl_prodi'    => $this->request->getPost('cpl_prodi'),
         ];
 
-        if (empty($data['nim']) || empty($data['id_rencana_pembelajaran']) || empty($data['nilai_kompetensi'])) {
+        if (empty($data['id_penyusun']) || empty($data['id_matakuliah']) || empty($data['cpl_prodi'])) {
             return redirect()->back()->with('error', 'Data wajib belum lengkap.');
         }
 
         if ($model->insert($data)) {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('success', 'Data berhasil ditambahkan.');
+            return redirect()->to('/capaian-lulusan')->with('success', 'Data berhasil ditambahkan.');
         } else {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Gagal menambahkan data.');
+            return redirect()->to('/capaian-lulusan')->with('error', 'Gagal menambahkan data.');
         }
     }
 
     public function updateById()
     {
         if (!in_array(session('role'), ['admin', 'manajer'])) {
-            return redirect()->to('nilai-pertemuan-mahasiswa')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
         }
-        $model = new NilaiMhsPertemuanModel();
+        $model = new CapaianLulusanModel();
 
         $id = $this->request->getPost('id');
         if (!$id) {
@@ -86,17 +85,15 @@ class NilaiMhsPertemuan extends BaseController
         }
 
         $data = [
-            'nim' => $this->request->getPost('nim'),
-            'id_rencana_pembelajaran' => $this->request->getPost('id_rencana_pembelajaran'),
-            'nilai_kompetensi' => $this->request->getPost('nilai_kompetensi'),
-            'status' => $this->request->getPost('status'),
-            'keterangan' => $this->request->getPost('keterangan')
+            'id_penyusun'  => $this->request->getPost('id_penyusun'),
+            'id_matakuliah' => $this->request->getPost('id_matakuliah'),
+            'cpl_prodi'    => $this->request->getPost('cpl_prodi'),
         ];
 
         if ($model->update($id, $data)) {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('success', 'Data berhasil diperbarui.');
+            return redirect()->to('/capaian-lulusan')->with('success', 'Data berhasil diperbarui.');
         } else {
-            return redirect()->to('/nilai-pertemuan-mahasiswa')->with('error', 'Gagal memperbarui data.');
+            return redirect()->to('/capaian-lulusan')->with('error', 'Gagal memperbarui data.');
         }
     }
 
@@ -111,7 +108,7 @@ class NilaiMhsPertemuan extends BaseController
             ]);
         }
 
-        $model = new NilaiMhsPertemuanModel();
+        $model = new CapaianLulusanModel();
         $data = $model->find($id);
 
         if (!$data) {
@@ -129,6 +126,9 @@ class NilaiMhsPertemuan extends BaseController
 
     public function deleteById()
     {
+        if (!in_array(session('role'), ['admin', 'manajer'])) {
+            return redirect()->to('/capaian-lulusan')->with('error', 'Tidak memiliki akses untuk aksi ini.');
+        }
         $id = $this->request->getPost('id');
 
         if (!$id) {
@@ -138,7 +138,7 @@ class NilaiMhsPertemuan extends BaseController
             ]);
         }
 
-        $model = new NilaiMhsPertemuanModel();
+        $model = new CapaianLulusanModel();
         $data = $model->find($id);
         if (!$data) {
             return $this->response->setJSON([
@@ -162,14 +162,14 @@ class NilaiMhsPertemuan extends BaseController
 
     public function exportExcel()
     {
-        $model = new NilaiMhsPertemuanModel();
-        $data = $model->findAll();
+        $model = new CapaianLulusanModel();
+        $dataCPL = $model->findAll();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'NILAI MAHASISWA');
-        $sheet->mergeCells('A1:E1');
+        $sheet->setCellValue('A1', 'CAPAIAN PEMBELAJARAN LULUSAN (CPL)');
+        $sheet->mergeCells('A1:D1');
 
         $sheet->getStyle('A1')->applyFromArray([
             'font' => [
@@ -183,7 +183,7 @@ class NilaiMhsPertemuan extends BaseController
         ]);
 
         $sheet->setCellValue('A2', 'Program Studi Teknik Informatika');
-        $sheet->mergeCells('A2:E2');
+        $sheet->mergeCells('A2:D2');
 
         $sheet->getStyle('A2')->applyFromArray([
             'font' => [
@@ -195,13 +195,11 @@ class NilaiMhsPertemuan extends BaseController
             ],
         ]);
 
-
-        // Header
-        $sheet->setCellValue('A4', 'nim');
-        $sheet->setCellValue('B4', 'id_rencana_pembelajaran');
-        $sheet->setCellValue('C4', 'nilai_kompetensi');
-        $sheet->setCellValue('D4', 'status');
-        $sheet->setCellValue('E4', 'keterangan');
+        // Header kolom
+        $sheet->setCellValue('A4', 'ID');
+        $sheet->setCellValue('B4', 'ID Penyusun');
+        $sheet->setCellValue('C4', 'ID Mata Kuliah');
+        $sheet->setCellValue('D4', 'CPL Prodi');
 
         $headerStyle = [
             'font' => [
@@ -220,27 +218,26 @@ class NilaiMhsPertemuan extends BaseController
         ];
 
         // Terapkan ke header (A1 sampai D1)
-        $sheet->getStyle('A4:E4')->applyFromArray($headerStyle);
+        $sheet->getStyle('A4:D4')->applyFromArray($headerStyle);
 
 
-        // Data
+        // Isi data
         $row = 5;
-        foreach ($data as $item) {
-            $sheet->setCellValue('A' . $row, $item['nim']);
-            $sheet->setCellValue('B' . $row, $item['id_rencana_pembelajaran']);
-            $sheet->setCellValue('C' . $row, $item['nilai_kompetensi']);
-            $sheet->setCellValue('D' . $row, $item['status']);
-            $sheet->setCellValue('E' . $row, $item['keterangan']);
+        foreach ($dataCPL as $item) {
+            $sheet->setCellValue('A' . $row, $item['id']);
+            $sheet->setCellValue('B' . $row, $item['id_penyusun']);
+            $sheet->setCellValue('C' . $row, $item['id_matakuliah']);
+            $sheet->setCellValue('D' . $row, $item['cpl_prodi']);
             $row++;
         }
 
-        foreach (range('A', 'E') as $columnID) {
+        foreach (range('A', 'D') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
         $lastRow = $row - 1;
 
-        $sheet->getStyle("A4:E{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A4:D{$lastRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => Border::BORDER_THIN,
@@ -248,21 +245,24 @@ class NilaiMhsPertemuan extends BaseController
             ],
         ]);
 
-        $sheet->getStyle("A2:E{$lastRow}")
+        $sheet->getStyle("A2:D{$lastRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        $sheet->getStyle("E2:E{$lastRow}")
+        $sheet->getStyle("D2:D{$lastRow}")
             ->getAlignment()
             ->setWrapText(true);
 
-        $filename = 'Nilai Mahasiswa.xlsx';
 
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header("Content-Disposition: attachment; filename=\"$filename\"");
-        header('Cache-Control: max-age=0');
 
         $writer = new Xlsx($spreadsheet);
+        $filename = 'Data CPL.xlsx';
+
+        // Header download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
         $writer->save('php://output');
         exit;
     }

@@ -5,8 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
- $routes->get('/', 'Home::index');
- $routes->get('/dashboard', 'Dashboard::index');
+$routes->get('/', 'Home::index');
+$routes->get('/dashboard', 'Dashboard::index');
 /** routes dashboard */
 
 
@@ -27,46 +27,48 @@ $routes->group('table', function ($routes) {
 	$routes->add('table3b71/(:segment)/edit', 'Table3b71::edit/$1');
 	$routes->get('table3b71/(:segment)/delete', 'Table3b71::delete/$1');
 	$routes->get('table3b71/cari', 'Table3b71::cari');
-
-  $routes->get('nilai-mhs-pertemuan', 'NilaiMhsPertemuan::index');
-	$routes->post('nilai-mhs-pertemuan/new', 'NilaiMhsPertemuan::create');
-	$routes->get('nilai-mhs-pertemuan/(:num)/edit', 'NilaiMhsPertemuan::edit/$1');
-	$routes->post('nilai-mhs-pertemuan/update/(:num)', 'NilaiMhsPertemuan::update/$1');
-	$routes->get('nilai-mhs-pertemuan/(:num)/delete', 'NilaiMhsPertemuan::delete/$1');
-	$routes->get('nilai-mhs-pertemuan/export', 'NilaiMhsPertemuan::exportExcel');
-
 });
 
+// nilai mhs pertemuan
+$routes->group('nilai-pertemuan-mahasiswa', function ($routes) {
+	$routes->get('/', 'NilaiMhsPertemuan::index');
+	$routes->post('getData', 'NilaiMhsPertemuan::getData');
+	$routes->post('newData', 'NilaiMhsPertemuan::createData');
+	$routes->post('updateData', 'NilaiMhsPertemuan::updateById');
+	$routes->get('getById', 'NilaiMhsPertemuan::getById');
+	$routes->post('deleteById', 'NilaiMhsPertemuan::deleteById');
+	$routes->get('export', 'NilaiMhsPertemuan::exportExcel');
+});
 
+// grup korelasi cpl-cpmk
 $routes->group('korelasi-cpl-cpmk', function ($routes) {
 	$routes->get('/', 'KorelasiCplCpmk::index');
-	$routes->post('new', 'KorelasiCplCpmk::create');
-	$routes->get('(:num)/edit', 'KorelasiCplCpmk::edit/$1');
-	$routes->post('update/(:num)', 'KorelasiCplCpmk::update/$1');
-	$routes->get('(:num)/delete', 'KorelasiCplCpmk::delete/$1');
-    $routes->get('export', 'KorelasiCplCpmk::exportExcel');
+	$routes->post('getData', 'KorelasiCplCpmk::getData');
+	$routes->post('newData', 'KorelasiCplCpmk::createData');
+	$routes->post('updateData', 'KorelasiCplCpmk::updateById');
+	$routes->get('getById', 'KorelasiCplCpmk::getById');
+	$routes->post('deleteById', 'KorelasiCplCpmk::deleteById');
+	$routes->get('export', 'KorelasiCplCpmk::exportExcel');
 });
 
 // grup rencana pembelajaran
-$routes->group('rpl', function ($routes) {
-	$routes->get('/', 'rpl::index');
-	$routes->post('getData', 'rpl::getData');
-	$routes->post('newData', 'rpl::newData');
-	$routes->post('updateData', 'rpl::updateData');
-	$routes->get('getById', 'rpl::getById');
-	$routes->post('deleteById', 'rpl::deleteById');
-	$routes->get('export', 'rpl::exportExcel');
+$routes->group('rencana-pembelajaran', function ($routes) {
+	$routes->get('/', 'RencanaPembelajaran::index');
+	$routes->post('getData', 'RencanaPembelajaran::getData');
+	$routes->post('newData', 'RencanaPembelajaran::createData');
+	$routes->post('updateData', 'RencanaPembelajaran::updateById');
+	$routes->get('getById', 'RencanaPembelajaran::getById');
+	$routes->post('deleteById', 'RencanaPembelajaran::deleteById');
+	$routes->get('export', 'RencanaPembelajaran::exportExcel');
 });
 
-$routes->group('table', function($routes){
-    $routes->get('cpl', 'CPL::index');
-    $routes->get('cpl/create', 'CPL::create');
-    $routes->post('cpl/store', 'CPL::store');
-
-	$routes->get('cpl/delete/(:num)', 'CPL::delete/$1');
-
-	$routes->post('cpl/update', 'CPL::update');
-	$routes->get('cpl/export', 'CPL::exportExcel');
-
-
+// grup cpl
+$routes->group('capaian-lulusan', function ($routes) {
+	$routes->get('/', 'CapaianLulusan::index');
+	$routes->post('getData', 'CapaianLulusan::getData');
+	$routes->post('newData', 'CapaianLulusan::createData');
+	$routes->post('updateData', 'CapaianLulusan::updateById');
+	$routes->get('getById', 'CapaianLulusan::getById');
+	$routes->post('deleteById', 'CapaianLulusan::deleteById');
+	$routes->get('export', 'CapaianLulusan::exportExcel');
 });
