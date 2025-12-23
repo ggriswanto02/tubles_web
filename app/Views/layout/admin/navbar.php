@@ -91,7 +91,7 @@
       </li>
 
       <!-- ROLE BASED MENU -->
-      <?php if (session()->get('role') === 'staff'): ?>
+      <?php if (session()->get('role') === 'admin'): ?>
         <li class="nav-item mt-2">
           <a class="nav-link" href="<?= base_url('user-management') ?>">
             <div
