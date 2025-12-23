@@ -72,3 +72,13 @@ $routes->group('capaian-lulusan', function ($routes) {
 	$routes->post('deleteById', 'CapaianLulusan::deleteById');
 	$routes->get('export', 'CapaianLulusan::exportExcel');
 });
+
+// grup user management
+$routes->group('user-management', ['filter' => 'adminAuth'], function ($routes) {
+	$routes->get('/', 'UserManagement::index');
+	$routes->post('getData', 'UserManagement::getData');
+	$routes->post('newData', 'UserManagement::createData');
+	$routes->post('updateData', 'UserManagement::updateData');
+	$routes->get('getByUsername', 'UserManagement::getByUsername');
+	$routes->post('deleteData', 'UserManagement::deleteData');
+});
